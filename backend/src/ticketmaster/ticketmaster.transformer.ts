@@ -5,16 +5,16 @@ export interface EventSummaryDto {
   id: string;
   name: string;
   date: string;
-  time: string | null;
-  dateTime: string | null;
+  time?: string;
+  dateTime?: string;
   image: string;
   city: string;
   state: string;
   venueName: string;
   category: string;
   genre: string;
-  priceMin: number | null;
-  priceMax: number | null;
+  priceMin?: number;
+  priceMax?: number;
   currency: string;
   status: string;
   url: string;
@@ -26,10 +26,10 @@ export interface EventDetailDto extends EventSummaryDto {
   images: string[];
   description: string;
   note: string;
-  salesStart: string | null;
-  salesEnd: string | null;
+  salesStart?: string;
+  salesEnd?: string;
   attractions: { id: string; name: string }[];
-  venue: VenueDto | null;
+  venue?: VenueDto;
 }
 
 /** Clean venue object. */
@@ -40,8 +40,8 @@ export interface VenueDto {
   city: string;
   state: string;
   country: string;
-  latitude: number | null;
-  longitude: number | null;
+  latitude?: number;
+  longitude?: number;
   timezone: string;
   imageUrl: string;
 }
@@ -64,8 +64,8 @@ function pickAllImages(images: { url: string; ratio: string }[]): string[] {
   return [...new Set(images.map((i) => i.url))];
 }
 
-export function transformVenue(venue?: TmVenue): VenueDto | null {
-  if (!venue) return null;
+export function transformVenue(venue?: TmVenue): VenueDto | undefined {
+  if (!venue) return undefined;
   return {
     id: venue.id,
     name: venue.name,
@@ -75,10 +75,10 @@ export function transformVenue(venue?: TmVenue): VenueDto | null {
     country: venue.country?.countryCode ?? '',
     latitude: venue.location?.latitude
       ? parseFloat(venue.location.latitude)
-      : null,
+      : undefined,
     longitude: venue.location?.longitude
       ? parseFloat(venue.location.longitude)
-      : null,
+      : undefined,
     timezone: venue.timezone ?? '',
     imageUrl: venue.images ? pickImage(venue.images as any) : '',
   };
@@ -93,16 +93,16 @@ export function transformToEventSummary(event: TmEvent): EventSummaryDto {
     id: event.id,
     name: event.name,
     date: event.dates.start.localDate,
-    time: event.dates.start.localTime ?? null,
-    dateTime: event.dates.start.dateTime ?? null,
+    time: event.dates.start.localTime,
+    dateTime: event.dates.start.dateTime,
     image: pickImage(event.images),
     city: venue?.city?.name ?? '',
     state: venue?.state?.stateCode ?? '',
     venueName: venue?.name ?? '',
     category: classification?.segment?.name ?? 'Other',
     genre: classification?.genre?.name ?? '',
-    priceMin: event.priceRanges?.[0]?.min ?? null,
-    priceMax: event.priceRanges?.[0]?.max ?? null,
+    priceMin: event.priceRanges?.[0]?.min,
+    priceMax: event.priceRanges?.[0]?.max,
     currency: event.priceRanges?.[0]?.currency ?? 'USD',
     status: event.dates.status.code,
     url: event.url,
@@ -117,8 +117,8 @@ export function transformToEventDetail(event: TmEvent): EventDetailDto {
     images: pickAllImages(event.images),
     description: event.info ?? event.pleaseNote ?? '',
     note: event.pleaseNote ?? '',
-    salesStart: event.sales?.public?.startDateTime ?? null,
-    salesEnd: event.sales?.public?.endDateTime ?? null,
+    salesStart: event.sales?.public?.startDateTime,
+    salesEnd: event.sales?.public?.endDateTime,
     attractions:
       event._embedded?.attractions?.map((a) => ({
         id: a.id,

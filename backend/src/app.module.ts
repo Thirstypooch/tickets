@@ -1,6 +1,9 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { APP_GUARD } from '@nestjs/core';
+import { join } from 'path';
 import configuration from './config/configuration';
 import { SupabaseModule } from './supabase/supabase.module';
 import { SupabaseAuthGuard } from './common/guards/supabase-auth.guard';
@@ -18,6 +21,13 @@ import { AppController } from './app.controller';
     ConfigModule.forRoot({
       isGlobal: true,
       load: [configuration],
+    }),
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      sortSchema: true,
+      playground: true,
+      path: '/api/graphql',
     }),
     SupabaseModule,
     TicketmasterModule,
