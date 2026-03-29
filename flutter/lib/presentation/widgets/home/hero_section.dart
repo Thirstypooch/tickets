@@ -44,7 +44,7 @@ class HeroSection extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Find Your Perfect Stay',
+                  'Live Events. Real Moments.',
                   style: AppTypography.display.copyWith(color: Colors.white),
                   textAlign: TextAlign.center,
                 )
@@ -53,7 +53,7 @@ class HeroSection extends StatelessWidget {
                     .slideY(begin: 0.2, duration: 800.ms),
                 const SizedBox(height: 16),
                 Text(
-                  'Discover unique homes and experiences around the world',
+                  'Concerts, sports, theatre & more — find your next experience',
                   style: AppTypography.bodyLg.copyWith(
                     color: Colors.white.withValues(alpha: 0.9),
                   ),

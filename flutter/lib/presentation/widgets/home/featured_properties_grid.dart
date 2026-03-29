@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../providers/property_providers.dart';
+import '../../providers/event_providers.dart';
 import '../properties/property_card.dart';
 
-class FeaturedPropertiesGrid extends ConsumerWidget {
-  const FeaturedPropertiesGrid({super.key});
+class FeaturedEventsGrid extends ConsumerWidget {
+  const FeaturedEventsGrid({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final featured = ref.watch(featuredPropertiesProvider);
+    final featured = ref.watch(featuredEventsProvider);
 
     return featured.when(
-      data: (properties) => LayoutBuilder(
+      data: (events) => LayoutBuilder(
         builder: (context, constraints) {
           final crossAxisCount = constraints.maxWidth >= 1100
               ? 4
@@ -25,12 +25,12 @@ class FeaturedPropertiesGrid extends ConsumerWidget {
               crossAxisCount: crossAxisCount,
               mainAxisSpacing: 24,
               crossAxisSpacing: 24,
-              childAspectRatio: 0.78,
+              childAspectRatio: 0.85,
             ),
-            itemCount: properties.length,
+            itemCount: events.length,
             itemBuilder: (context, index) {
-              return PropertyCard(
-                property: properties[index],
+              return EventCard(
+                event: events[index],
                 animationIndex: index,
               );
             },

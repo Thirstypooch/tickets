@@ -30,7 +30,7 @@ class AppHeader extends ConsumerWidget implements PreferredSizeWidget {
             Icon(LucideIcons.home, size: 24, color: AppColors.brand),
             const SizedBox(width: 8),
             const Text(
-              'CRIBS',
+              'TICKETS',
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w800,
@@ -43,12 +43,12 @@ class AppHeader extends ConsumerWidget implements PreferredSizeWidget {
       actions: [
         if (isDesktop) ...[
           TextButton(
-            onPressed: () => context.go('/properties'),
-            child: const Text('Explore'),
+            onPressed: () => context.go('/events'),
+            child: const Text('Events'),
           ),
           TextButton(
             onPressed: () {},
-            child: const Text('Become a Host'),
+            child: const Text('Browse'),
           ),
         ],
         // Theme toggle
@@ -73,14 +73,14 @@ class AppHeader extends ConsumerWidget implements PreferredSizeWidget {
                 case 'dashboard':
                   context.go('/dashboard');
                 case 'properties':
-                  context.go('/properties');
+                  context.go('/events');
                 case 'logout':
                   ref.read(isAuthenticatedProvider.notifier).state = false;
               }
             },
             itemBuilder: (context) => [
               const PopupMenuItem(value: 'dashboard', child: Text('Dashboard')),
-              const PopupMenuItem(value: 'properties', child: Text('My Properties')),
+              const PopupMenuItem(value: 'events', child: Text('My Events')),
               const PopupMenuDivider(),
               const PopupMenuItem(value: 'logout', child: Text('Log Out')),
             ],

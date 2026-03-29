@@ -3,37 +3,29 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
-import '../../../core/utils/booking_calculator.dart';
-import '../../../core/utils/currency_formatter.dart';
 import '../../providers/booking_form_providers.dart';
-import '../common/date_picker_field.dart';
 import '../common/guest_counter.dart';
-class BookingWidget extends ConsumerWidget {
-  final int price;
-  final double rating;
-  final int reviewCount;
 
-  const BookingWidget({
+/// Ticket booking widget for event detail page.
+/// Replaces the old property booking widget (dates + guests → quantity + buy).
+class TicketBookingWidget extends ConsumerWidget {
+  final String eventId;
+  final double? priceMin;
+  final double? priceMax;
+  final String ticketmasterUrl;
+
+  const TicketBookingWidget({
     super.key,
-    required this.price,
-    required this.rating,
-    required this.reviewCount,
+    required this.eventId,
+    this.priceMin,
+    this.priceMax,
+    required this.ticketmasterUrl,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final checkIn = ref.watch(checkInProvider);
-    final checkOut = ref.watch(checkOutProvider);
-    final guests = ref.watch(guestsProvider);
-
-    final hasDateRange = checkIn != null && checkOut != null;
-    final breakdown = hasDateRange
-        ? BookingCalculator.calculate(
-            pricePerNight: price,
-            checkIn: checkIn,
-            checkOut: checkOut,
-          )
-        : null;
+    final quantity = ref.watch(ticketQuantityProvider);
+    final hasPrice = priceMin != null;
 
     return Container(
       padding: const EdgeInsets.all(AppSpacing.xxl),
@@ -51,95 +43,38 @@ class BookingWidget extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Price and rating header
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              RichText(
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: '\$$price',
-                      style: const TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.gray900,
-                      ),
-                    ),
-                    const TextSpan(
-                      text: ' night',
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: AppColors.gray600,
-                      ),
-                    ),
-                  ],
+          // Price header
+          if (hasPrice)
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.baseline,
+              textBaseline: TextBaseline.alphabetic,
+              children: [
+                Text(
+                  'From \$${priceMin!.toStringAsFixed(0)}',
+                  style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w700),
                 ),
-              ),
-              Row(
-                children: [
-                  const Icon(LucideIcons.star,
-                      size: 14, color: AppColors.starYellow),
+                if (priceMax != null && priceMax != priceMin) ...[
                   const SizedBox(width: 4),
                   Text(
-                    '$rating',
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  const SizedBox(width: 4),
-                  Text(
-                    '· $reviewCount reviews',
-                    style: const TextStyle(
-                      fontSize: 13,
-                      color: AppColors.gray500,
-                    ),
+                    '- \$${priceMax!.toStringAsFixed(0)}',
+                    style: const TextStyle(fontSize: 16, color: AppColors.gray500),
                   ),
                 ],
-              ),
-            ],
-          ),
-          const SizedBox(height: 20),
-
-          // Date selection
-          Container(
-            decoration: BoxDecoration(
-              border: Border.all(color: AppColors.gray300),
-              borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(12),
-                    child: DatePickerField(
-                      label: 'Check in',
-                      value: checkIn,
-                      onChanged: (d) =>
-                          ref.read(checkInProvider.notifier).state = d,
-                    ),
-                  ),
-                ),
-                Container(width: 1, height: 50, color: AppColors.gray300),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(12),
-                    child: DatePickerField(
-                      label: 'Check out',
-                      value: checkOut,
-                      onChanged: (d) =>
-                          ref.read(checkOutProvider.notifier).state = d,
-                      firstDate: checkIn,
-                    ),
-                  ),
+                const SizedBox(width: 8),
+                const Text(
+                  'per ticket',
+                  style: TextStyle(fontSize: 14, color: AppColors.gray500),
                 ),
               ],
+            )
+          else
+            const Text(
+              'Price TBD',
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700),
             ),
-          ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 20),
 
-          // Guests
+          // Ticket quantity
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
@@ -150,7 +85,7 @@ class BookingWidget extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  'GUESTS',
+                  'TICKETS',
                   style: TextStyle(
                     fontSize: 10,
                     fontWeight: FontWeight.w500,
@@ -160,61 +95,74 @@ class BookingWidget extends ConsumerWidget {
                 ),
                 const SizedBox(height: 4),
                 GuestCounter(
-                  value: guests,
+                  value: quantity,
                   onChanged: (v) =>
-                      ref.read(guestsProvider.notifier).state = v,
+                      ref.read(ticketQuantityProvider.notifier).state = v,
                 ),
               ],
             ),
           ),
           const SizedBox(height: 16),
 
-          // Reserve button
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: hasDateRange ? () {} : null,
-              child: Text(
-                hasDateRange ? 'Reserve' : 'Check availability',
-              ),
-            ),
-          ),
-
           // Price breakdown
-          if (breakdown != null && breakdown.nights > 0) ...[
-            const SizedBox(height: 12),
-            Center(
-              child: Text(
-                "You won't be charged yet",
-                style: TextStyle(fontSize: 13, color: AppColors.gray500),
-              ),
-            ),
-            const SizedBox(height: 16),
-            const Divider(),
-            const SizedBox(height: 12),
+          if (hasPrice) ...[
             _PriceRow(
-              '\$$price x ${breakdown.nights} nights',
-              CurrencyFormatter.formatDecimal(breakdown.subtotal),
+              '${quantity}x tickets',
+              '\$${(priceMin! * quantity).toStringAsFixed(2)}',
             ),
             const SizedBox(height: 8),
             _PriceRow(
               'Service fee',
-              CurrencyFormatter.formatDecimal(breakdown.serviceFee),
-            ),
-            const SizedBox(height: 8),
-            _PriceRow(
-              'Taxes',
-              CurrencyFormatter.formatDecimal(breakdown.taxes),
+              '\$${(priceMin! * quantity * 0.14).toStringAsFixed(2)}',
             ),
             const SizedBox(height: 12),
             const Divider(),
             const SizedBox(height: 12),
             _PriceRow(
-              'Total',
-              CurrencyFormatter.formatDecimal(breakdown.total),
+              'Estimated total',
+              '\$${(priceMin! * quantity * 1.14).toStringAsFixed(2)}',
               bold: true,
             ),
+            const SizedBox(height: 16),
           ],
+
+          // Book button
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton.icon(
+              onPressed: () {
+                // In a real app, this creates a booking via the API
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Booking confirmed! (demo)')),
+                );
+              },
+              icon: const Icon(LucideIcons.ticket, size: 18),
+              label: const Text('Get Tickets'),
+            ),
+          ),
+          const SizedBox(height: 8),
+
+          // Ticketmaster link
+          Center(
+            child: TextButton.icon(
+              onPressed: () {
+                // In a real app, launch URL
+              },
+              icon: const Icon(LucideIcons.externalLink, size: 14),
+              label: const Text('View on Ticketmaster'),
+              style: TextButton.styleFrom(
+                textStyle: const TextStyle(fontSize: 13),
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 8),
+          const Center(
+            child: Text(
+              'Powered by Ticketmaster',
+              style: TextStyle(fontSize: 11, color: AppColors.gray400),
+            ),
+          ),
         ],
       ),
     );

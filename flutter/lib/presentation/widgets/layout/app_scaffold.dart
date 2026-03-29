@@ -36,10 +36,10 @@ class _MobileDrawer extends StatelessWidget {
             ),
             ListTile(
               leading: const Icon(LucideIcons.search),
-              title: const Text('Explore Properties'),
+              title: const Text('Browse Events'),
               onTap: () {
                 Navigator.pop(context);
-                context.go('/properties');
+                context.go('/events');
               },
             ),
             ListTile(
@@ -53,7 +53,7 @@ class _MobileDrawer extends StatelessWidget {
             const Divider(),
             ListTile(
               leading: const Icon(LucideIcons.plusCircle),
-              title: const Text('Become a Host'),
+              title: const Text('My Tickets'),
               onTap: () => Navigator.pop(context),
             ),
           ],

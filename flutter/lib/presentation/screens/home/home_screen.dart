@@ -16,33 +16,33 @@ class HomeScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const HeroSection(),
-          // Featured Properties
+          // Featured Events
           Padding(
             padding: const EdgeInsets.all(AppSpacing.xxl),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Featured Properties', style: AppTypography.h1),
+                Text('Trending Events', style: AppTypography.h1),
                 const SizedBox(height: 8),
                 Text(
-                  'Hand-picked properties for an unforgettable experience',
+                  'Don\'t miss the hottest events happening near you',
                   style: AppTypography.body.copyWith(color: Colors.grey),
                 ),
                 const SizedBox(height: 24),
-                const FeaturedPropertiesGrid(),
+                const FeaturedEventsGrid(),
               ],
             ),
           ),
-          // Explore Destinations
+          // Explore Cities
           Padding(
             padding: const EdgeInsets.all(AppSpacing.xxl),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Explore Destinations', style: AppTypography.h1),
+                Text('Explore Cities', style: AppTypography.h1),
                 const SizedBox(height: 8),
                 Text(
-                  'Browse properties in top cities around the world',
+                  'Discover events in top cities around the world',
                   style: AppTypography.body.copyWith(color: Colors.grey),
                 ),
                 const SizedBox(height: 24),

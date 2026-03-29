@@ -1,7 +1,7 @@
 import 'package:go_router/go_router.dart';
 import '../../presentation/screens/home/home_screen.dart';
-import '../../presentation/screens/properties/properties_screen.dart';
-import '../../presentation/screens/properties/property_detail_screen.dart';
+import '../../presentation/screens/events/events_screen.dart';
+import '../../presentation/screens/events/event_detail_screen.dart';
 import '../../presentation/screens/dashboard/dashboard_screen.dart';
 import '../../presentation/widgets/layout/app_scaffold.dart';
 
@@ -18,16 +18,16 @@ final appRouter = GoRouter(
           ),
         ),
         GoRoute(
-          path: '/properties',
+          path: '/events',
           pageBuilder: (context, state) => const NoTransitionPage(
-            child: PropertiesScreen(),
+            child: EventsScreen(),
           ),
         ),
         GoRoute(
-          path: '/properties/:id',
+          path: '/events/:id',
           pageBuilder: (context, state) => NoTransitionPage(
-            child: PropertyDetailScreen(
-              propertyId: state.pathParameters['id']!,
+            child: EventDetailScreen(
+              eventId: state.pathParameters['id']!,
             ),
           ),
         ),

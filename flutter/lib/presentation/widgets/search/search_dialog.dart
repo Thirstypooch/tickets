@@ -3,8 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
-import '../common/date_picker_field.dart';
-import '../common/guest_counter.dart';
 import '../../providers/search_providers.dart';
 
 class SearchDialog extends ConsumerStatefulWidget {
@@ -15,24 +13,21 @@ class SearchDialog extends ConsumerStatefulWidget {
 }
 
 class _SearchDialogState extends ConsumerState<SearchDialog> {
-  late TextEditingController _locationController;
-  DateTime? _checkIn;
-  DateTime? _checkOut;
-  int _guests = 1;
+  late TextEditingController _keywordController;
+  late TextEditingController _cityController;
 
   @override
   void initState() {
     super.initState();
     final params = ref.read(searchParamsProvider);
-    _locationController = TextEditingController(text: params.location);
-    _checkIn = params.checkIn;
-    _checkOut = params.checkOut;
-    _guests = params.guests;
+    _keywordController = TextEditingController(text: params.keyword);
+    _cityController = TextEditingController(text: params.city);
   }
 
   @override
   void dispose() {
-    _locationController.dispose();
+    _keywordController.dispose();
+    _cityController.dispose();
     super.dispose();
   }
 
@@ -50,7 +45,6 @@ class _SearchDialogState extends ConsumerState<SearchDialog> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Handle
             Center(
               child: Container(
                 width: 40,
@@ -63,66 +57,40 @@ class _SearchDialogState extends ConsumerState<SearchDialog> {
             ),
             const SizedBox(height: 24),
             const Text(
-              'Search',
+              'Find Events',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
             ),
             const SizedBox(height: 24),
-
-            // Location
             TextField(
-              controller: _locationController,
+              controller: _keywordController,
               decoration: const InputDecoration(
-                labelText: 'Where are you going?',
-                prefixIcon: Icon(LucideIcons.mapPin),
+                labelText: 'What are you looking for?',
+                hintText: 'Artist, event, or venue',
+                prefixIcon: Icon(LucideIcons.search),
               ),
             ),
             const SizedBox(height: 16),
-
-            // Dates
-            Row(
-              children: [
-                Expanded(
-                  child: DatePickerField(
-                    label: 'Check in',
-                    value: _checkIn,
-                    onChanged: (d) => setState(() => _checkIn = d),
-                  ),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: DatePickerField(
-                    label: 'Check out',
-                    value: _checkOut,
-                    onChanged: (d) => setState(() => _checkOut = d),
-                    firstDate: _checkIn,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-
-            // Guests
-            GuestCounter(
-              value: _guests,
-              onChanged: (v) => setState(() => _guests = v),
+            TextField(
+              controller: _cityController,
+              decoration: const InputDecoration(
+                labelText: 'Where?',
+                hintText: 'City name',
+                prefixIcon: Icon(LucideIcons.mapPin),
+              ),
             ),
             const SizedBox(height: 24),
-
-            // Search button
             SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(
                 onPressed: () {
                   ref.read(searchParamsProvider.notifier).state = SearchParams(
-                    location: _locationController.text,
-                    checkIn: _checkIn,
-                    checkOut: _checkOut,
-                    guests: _guests,
+                    keyword: _keywordController.text,
+                    city: _cityController.text,
                   );
                   Navigator.pop(context);
                 },
                 icon: const Icon(LucideIcons.search, size: 18),
-                label: const Text('Search'),
+                label: const Text('Search Events'),
               ),
             ),
             SizedBox(height: MediaQuery.of(context).viewInsets.bottom),

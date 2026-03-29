@@ -1,29 +1,29 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SearchParams {
-  final String location;
-  final DateTime? checkIn;
-  final DateTime? checkOut;
-  final int guests;
+  final String keyword;
+  final String city;
+  final String category;
+  final String? startDate;
 
   const SearchParams({
-    this.location = '',
-    this.checkIn,
-    this.checkOut,
-    this.guests = 1,
+    this.keyword = '',
+    this.city = '',
+    this.category = '',
+    this.startDate,
   });
 
   SearchParams copyWith({
-    String? location,
-    DateTime? checkIn,
-    DateTime? checkOut,
-    int? guests,
+    String? keyword,
+    String? city,
+    String? category,
+    String? startDate,
   }) {
     return SearchParams(
-      location: location ?? this.location,
-      checkIn: checkIn ?? this.checkIn,
-      checkOut: checkOut ?? this.checkOut,
-      guests: guests ?? this.guests,
+      keyword: keyword ?? this.keyword,
+      city: city ?? this.city,
+      category: category ?? this.category,
+      startDate: startDate ?? this.startDate,
     );
   }
 }

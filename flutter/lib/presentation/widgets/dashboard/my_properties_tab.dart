@@ -1,132 +1,54 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../../core/constants/app_colors.dart';
-import '../../providers/property_providers.dart';
-import '../common/status_badge.dart';
+import '../../providers/event_providers.dart';
+import '../properties/property_card.dart';
 
 class MyPropertiesTab extends ConsumerWidget {
   const MyPropertiesTab({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final hostProperties = ref.watch(hostPropertiesProvider);
+    final events = ref.watch(featuredEventsProvider);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'My Properties',
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700),
-                ),
-                SizedBox(height: 4),
-                Text(
-                  'Manage your property listings',
-                  style: TextStyle(fontSize: 14, color: AppColors.gray500),
-                ),
-              ],
-            ),
-            ElevatedButton.icon(
-              onPressed: () {},
-              icon: const Icon(LucideIcons.plus, size: 16),
-              label: const Text('Add New Property'),
-            ),
-          ],
-        ),
+        const Text('Saved Events', style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700)),
+        const SizedBox(height: 4),
+        const Text('Events you\'ve saved for later', style: TextStyle(fontSize: 14, color: AppColors.gray500)),
         const SizedBox(height: 24),
-        hostProperties.when(
-          data: (properties) => SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: DataTable(
-              columns: const [
-                DataColumn(label: Text('Property')),
-                DataColumn(label: Text('Status')),
-                DataColumn(label: Text('Bookings')),
-                DataColumn(label: Text('Rating')),
-                DataColumn(label: Text('Earnings')),
-                DataColumn(label: Text('')),
-              ],
-              rows: properties
-                  .map((p) => DataRow(cells: [
-                        DataCell(Row(
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
-                              child: CachedNetworkImage(
-                                imageUrl: p.image,
-                                width: 48,
-                                height: 48,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            const SizedBox(width: 12),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(p.name,
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.w500)),
-                                Text(p.location,
-                                    style: const TextStyle(
-                                        fontSize: 12,
-                                        color: AppColors.gray500)),
-                              ],
-                            ),
-                          ],
-                        )),
-                        DataCell(StatusBadge(status: p.status)),
-                        DataCell(Text('${p.bookings}',
-                            style:
-                                const TextStyle(fontWeight: FontWeight.w500))),
-                        DataCell(
-                          p.rating != null
-                              ? Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    const Icon(LucideIcons.star,
-                                        size: 14,
-                                        color: AppColors.starYellow),
-                                    const SizedBox(width: 4),
-                                    Text('${p.rating}',
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.w500)),
-                                  ],
-                                )
-                              : const Text('No ratings yet',
-                                  style: TextStyle(
-                                      fontSize: 13,
-                                      color: AppColors.gray400)),
-                        ),
-                        DataCell(Text(p.earnings,
-                            style:
-                                const TextStyle(fontWeight: FontWeight.w500))),
-                        DataCell(
-                          PopupMenuButton<String>(
-                            onSelected: (value) {},
-                            itemBuilder: (context) => [
-                              const PopupMenuItem(
-                                  value: 'view', child: Text('View')),
-                              const PopupMenuItem(
-                                  value: 'edit', child: Text('Edit')),
-                              const PopupMenuItem(
-                                  value: 'archive', child: Text('Archive')),
-                            ],
-                            child: const Icon(LucideIcons.moreHorizontal,
-                                size: 18),
-                          ),
-                        ),
-                      ]))
-                  .toList(),
-            ),
-          ),
+        events.when(
+          data: (list) => list.isEmpty
+              ? Center(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 48),
+                    child: Column(
+                      children: [
+                        Icon(LucideIcons.heart, size: 48, color: AppColors.gray300),
+                        const SizedBox(height: 16),
+                        const Text('No saved events yet', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+                        const SizedBox(height: 8),
+                        const Text('Save events to find them here later', style: TextStyle(color: AppColors.gray500)),
+                      ],
+                    ),
+                  ),
+                )
+              : LayoutBuilder(
+                  builder: (context, constraints) {
+                    final cols = constraints.maxWidth >= 900 ? 3 : constraints.maxWidth >= 500 ? 2 : 1;
+                    return GridView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: cols, mainAxisSpacing: 24, crossAxisSpacing: 24, childAspectRatio: 0.85,
+                      ),
+                      itemCount: list.length,
+                      itemBuilder: (context, index) => EventCard(event: list[index]),
+                    );
+                  },
+                ),
           loading: () => const Center(child: CircularProgressIndicator()),
           error: (e, _) => Center(child: Text('Error: $e')),
         ),

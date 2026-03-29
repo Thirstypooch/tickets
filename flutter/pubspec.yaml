@@ -21,6 +21,9 @@ dependencies:
   freezed_annotation: ^2.4.4
   json_annotation: ^4.9.0
 
+  # HTTP Client
+  dio: ^5.7.0
+
   # Network Images
   cached_network_image: ^3.4.1
 

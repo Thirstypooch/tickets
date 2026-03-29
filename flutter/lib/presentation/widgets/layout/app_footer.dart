@@ -34,7 +34,7 @@ class AppFooter extends StatelessWidget {
                         Icon(LucideIcons.home, size: 20, color: AppColors.brand),
                         const SizedBox(width: 8),
                         const Text(
-                          'CRIBS',
+                          'TICKETS',
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w800,
@@ -46,7 +46,7 @@ class AppFooter extends StatelessWidget {
                     ),
                     const SizedBox(height: 12),
                     const Text(
-                      'Find and book unique accommodations around the world.',
+                      'Discover and book live events, concerts, sports & more.',
                       style: TextStyle(fontSize: 14, color: AppColors.gray400),
                     ),
                     const SizedBox(height: 16),
@@ -77,7 +77,7 @@ class AppFooter extends StatelessWidget {
           const Divider(color: AppColors.gray700),
           const SizedBox(height: 16),
           const Text(
-            '\u00a9 2024 CRIBS. All rights reserved.',
+            '\u00a9 2026 TICKETS. All rights reserved.',
             style: TextStyle(fontSize: 12, color: AppColors.gray500),
           ),
         ],

@@ -3,14 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
-import '../../../core/utils/currency_formatter.dart';
-import '../../../data/models/trip.dart';
+import '../../../data/models/ticket_booking.dart';
 import '../common/status_badge.dart';
 
-class TripCard extends StatelessWidget {
-  final Trip trip;
+class BookingCard extends StatelessWidget {
+  final TicketBooking booking;
 
-  const TripCard({super.key, required this.trip});
+  const BookingCard({super.key, required this.booking});
 
   @override
   Widget build(BuildContext context) {
@@ -36,12 +35,12 @@ class TripCard extends StatelessWidget {
                   SizedBox(
                     width: 192,
                     child: CachedNetworkImage(
-                      imageUrl: trip.property.image,
+                      imageUrl: booking.eventSnapshot.image,
                       fit: BoxFit.cover,
                       height: double.infinity,
                     ),
                   ),
-                  Expanded(child: _Content(trip: trip)),
+                  Expanded(child: _Content(booking: booking)),
                 ],
               ),
             );
@@ -51,11 +50,11 @@ class TripCard extends StatelessWidget {
               AspectRatio(
                 aspectRatio: 16 / 9,
                 child: CachedNetworkImage(
-                  imageUrl: trip.property.image,
+                  imageUrl: booking.eventSnapshot.image,
                   fit: BoxFit.cover,
                 ),
               ),
-              _Content(trip: trip),
+              _Content(booking: booking),
             ],
           );
         },
@@ -65,13 +64,12 @@ class TripCard extends StatelessWidget {
 }
 
 class _Content extends StatelessWidget {
-  final Trip trip;
-  const _Content({required this.trip});
+  final TicketBooking booking;
+  const _Content({required this.booking});
 
   @override
   Widget build(BuildContext context) {
-    final isUpcoming = trip.status == 'confirmed';
-    final isPast = trip.status == 'completed';
+    final snap = booking.eventSnapshot;
 
     return Padding(
       padding: const EdgeInsets.all(AppSpacing.lg),
@@ -86,46 +84,35 @@ class _Content extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      trip.property.title,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
+                      snap.name,
+                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                     ),
                     const SizedBox(height: 4),
                     Row(
                       children: [
-                        const Icon(LucideIcons.mapPin,
-                            size: 14, color: AppColors.gray500),
+                        const Icon(LucideIcons.mapPin, size: 14, color: AppColors.gray500),
                         const SizedBox(width: 4),
                         Text(
-                          trip.property.location,
-                          style: const TextStyle(
-                            fontSize: 13,
-                            color: AppColors.gray500,
-                          ),
+                          '${snap.venueName} · ${snap.city}',
+                          style: const TextStyle(fontSize: 13, color: AppColors.gray500),
                         ),
                       ],
                     ),
                     const SizedBox(height: 4),
                     Row(
                       children: [
-                        const Icon(LucideIcons.calendar,
-                            size: 14, color: AppColors.gray500),
+                        const Icon(LucideIcons.calendar, size: 14, color: AppColors.gray500),
                         const SizedBox(width: 4),
                         Text(
-                          '${trip.checkIn} - ${trip.checkOut}',
-                          style: const TextStyle(
-                            fontSize: 13,
-                            color: AppColors.gray500,
-                          ),
+                          snap.date,
+                          style: const TextStyle(fontSize: 13, color: AppColors.gray500),
                         ),
                       ],
                     ),
                   ],
                 ),
               ),
-              StatusBadge(status: trip.status),
+              StatusBadge(status: booking.status),
             ],
           ),
           const SizedBox(height: 12),
@@ -133,47 +120,26 @@ class _Content extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                '${trip.guests} guests · Total: ${CurrencyFormatter.format(trip.total)}',
+                '${booking.quantity} ticket${booking.quantity > 1 ? 's' : ''} · \$${booking.totalPrice.toStringAsFixed(0)}',
                 style: const TextStyle(fontSize: 13, color: AppColors.gray600),
               ),
-              if (isPast && trip.rating != null)
-                Row(
-                  children: [
-                    const Icon(LucideIcons.star,
-                        size: 14, color: AppColors.starYellow),
-                    const SizedBox(width: 4),
-                    Text(
-                      '${trip.rating}',
-                      style: const TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ],
-                ),
-              if (isUpcoming)
+              if (booking.status == 'confirmed')
                 OutlinedButton.icon(
                   onPressed: () {},
-                  icon: const Icon(LucideIcons.messageCircle, size: 14),
-                  label: const Text('Contact Host'),
+                  icon: const Icon(LucideIcons.ticket, size: 14),
+                  label: const Text('View Tickets'),
                   style: OutlinedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 8,
-                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     textStyle: const TextStyle(fontSize: 13),
                   ),
                 ),
-              if (isPast && trip.rating == null)
+              if (booking.status == 'completed')
                 OutlinedButton.icon(
                   onPressed: () {},
                   icon: const Icon(LucideIcons.star, size: 14),
                   label: const Text('Leave Review'),
                   style: OutlinedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 8,
-                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     textStyle: const TextStyle(fontSize: 13),
                   ),
                 ),

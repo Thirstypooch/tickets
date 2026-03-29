@@ -5,25 +5,23 @@ import 'package:go_router/go_router.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
-import '../../../data/models/property.dart';
-import '../common/avatar_widget.dart';
-import '../common/star_rating.dart';
-import '../common/price_tag.dart';
+import '../../../data/models/event.dart';
 
-class PropertyCard extends StatelessWidget {
-  final PropertySummary property;
+/// Event card — used in featured grid and events list.
+class EventCard extends StatelessWidget {
+  final EventSummary event;
   final int? animationIndex;
 
-  const PropertyCard({
+  const EventCard({
     super.key,
-    required this.property,
+    required this.event,
     this.animationIndex,
   });
 
   @override
   Widget build(BuildContext context) {
     Widget card = GestureDetector(
-      onTap: () => context.go('/properties/${property.id}'),
+      onTap: () => context.go('/events/${event.id}'),
       child: Container(
         decoration: BoxDecoration(
           color: Theme.of(context).cardTheme.color,
@@ -40,14 +38,14 @@ class PropertyCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Image with rating badge
+            // Image with category badge
             AspectRatio(
-              aspectRatio: 4 / 3,
+              aspectRatio: 16 / 10,
               child: Stack(
                 fit: StackFit.expand,
                 children: [
                   CachedNetworkImage(
-                    imageUrl: property.image,
+                    imageUrl: event.image,
                     fit: BoxFit.cover,
                     placeholder: (_, __) => Container(color: AppColors.gray200),
                     errorWidget: (_, __, ___) => Container(
@@ -57,62 +55,88 @@ class PropertyCard extends StatelessWidget {
                   ),
                   Positioned(
                     top: 12,
-                    right: 12,
-                    child: RatingBadge(rating: property.rating),
+                    left: 12,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: AppColors.brand.withValues(alpha: 0.9),
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: Text(
+                        event.category,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 11,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
                   ),
+                  if (event.priceMin != null)
+                    Positioned(
+                      top: 12,
+                      right: 12,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(6),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.1),
+                              blurRadius: 4,
+                            ),
+                          ],
+                        ),
+                        child: Text(
+                          'From \$${event.priceMin!.toStringAsFixed(0)}',
+                          style: const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.gray900,
+                          ),
+                        ),
+                      ),
+                    ),
                 ],
               ),
             ),
-            // Content
             Padding(
               padding: const EdgeInsets.all(AppSpacing.lg),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    property.title,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                    maxLines: 1,
+                    event.name,
+                    style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+                    maxLines: 2,
                     overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 6),
+                  Row(
+                    children: [
+                      const Icon(LucideIcons.calendar, size: 13, color: AppColors.gray500),
+                      const SizedBox(width: 4),
+                      Text(event.date, style: const TextStyle(fontSize: 13, color: AppColors.gray500)),
+                      if (event.time != null) ...[
+                        const Text(' · ', style: TextStyle(color: AppColors.gray400)),
+                        Text(event.time!.substring(0, 5), style: const TextStyle(fontSize: 13, color: AppColors.gray500)),
+                      ],
+                    ],
                   ),
                   const SizedBox(height: 4),
                   Row(
                     children: [
-                      const Icon(LucideIcons.mapPin, size: 14, color: AppColors.gray500),
+                      const Icon(LucideIcons.mapPin, size: 13, color: AppColors.gray500),
                       const SizedBox(width: 4),
                       Expanded(
                         child: Text(
-                          property.location,
-                          style: const TextStyle(
-                            fontSize: 13,
-                            color: AppColors.gray500,
-                          ),
+                          '${event.venueName} · ${event.location}',
+                          style: const TextStyle(fontSize: 13, color: AppColors.gray500),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                    ],
-                  ),
-                  const SizedBox(height: 12),
-                  Row(
-                    children: [
-                      AvatarWidget(imageUrl: property.host.avatar, size: 24),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Text(
-                          property.host.name,
-                          style: const TextStyle(
-                            fontSize: 13,
-                            color: AppColors.gray600,
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                      PriceTag(price: property.price),
                     ],
                   ),
                 ],
