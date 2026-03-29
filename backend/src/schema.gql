@@ -1,0 +1,146 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Attraction {
+  id: String!
+  name: String!
+}
+
+type Booking {
+  createdAt: String!
+  eventSnapshot: EventSnapshot!
+  id: ID!
+  quantity: Int!
+  status: String!
+  tmEventId: String!
+  totalPrice: Float!
+  unitPrice: Float!
+  userId: String!
+}
+
+type DashboardStat {
+  description: String!
+  icon: String!
+  title: String!
+  trend: String!
+  value: String!
+}
+
+type Event {
+  category: String!
+  city: String!
+  currency: String!
+  date: String!
+  genre: String
+  id: String!
+  image: String!
+  isFavorited: Boolean
+  name: String!
+  priceMax: Float
+  priceMin: Float
+  state: String!
+  status: String!
+  time: String
+  url: String!
+  venueName: String!
+}
+
+type EventDetail {
+  attractions: [Attraction!]!
+  averageRating: Float
+  category: String!
+  city: String!
+  currency: String!
+  date: String!
+  dateTBD: Boolean!
+  dateTime: String
+  description: String!
+  genre: String
+  id: String!
+  image: String!
+  images: [String!]!
+  isFavorited: Boolean
+  name: String!
+  note: String
+  priceMax: Float
+  priceMin: Float
+  reviewCount: Int!
+  reviews: [Review!]!
+  salesEnd: String
+  salesStart: String
+  similarEvents: [Event!]!
+  state: String!
+  status: String!
+  time: String
+  url: String!
+  venue: Venue
+  venueName: String!
+}
+
+input EventFilterInput {
+  category: String
+  city: String
+  endDate: String
+  genreId: String
+  keyword: String
+  page: Int
+  priceMax: Float
+  priceMin: Float
+  size: Int
+  sort: String
+  startDate: String
+}
+
+type EventSnapshot {
+  city: String!
+  date: String!
+  image: String!
+  name: String!
+  venueName: String!
+}
+
+type Mutation {
+  createBooking(quantity: Float!, tmEventId: String!, unitPrice: Float!): Booking!
+}
+
+type PaginatedEvents {
+  events: [Event!]!
+  page: Int!
+  pages: Int!
+  total: Int!
+}
+
+type Query {
+  dashboardStats: [DashboardStat!]!
+  eventDetail(id: String!): EventDetail!
+  events(filter: EventFilterInput): PaginatedEvents!
+  featuredEvents: [Event!]!
+  myBookings: [Booking!]!
+  pastBookings: [Booking!]!
+  upcomingBookings: [Booking!]!
+}
+
+type Review {
+  comment: String!
+  createdAt: String!
+  id: String!
+  rating: Int!
+  tmEventId: String!
+  userAvatar: String
+  userId: String!
+  userName: String!
+}
+
+type Venue {
+  address: String!
+  city: String!
+  country: String!
+  id: String!
+  imageUrl: String
+  latitude: Float
+  longitude: Float
+  name: String!
+  state: String!
+  timezone: String!
+}

@@ -2,12 +2,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../data/models/event.dart';
 import '../../data/models/event_filter.dart';
 import '../../data/repositories/event_repository.dart';
-import '../../data/repositories/mock_event_repository.dart';
-// import '../../data/repositories/api_event_repository.dart'; // uncomment for live API
+import '../../data/repositories/api_event_repository.dart';
 
 final eventRepositoryProvider = Provider<EventRepository>((ref) {
-  return MockEventRepository();
-  // return ApiEventRepository(); // uncomment for live API
+  return ApiEventRepository();
 });
 
 final eventFilterProvider = StateProvider<EventFilter>((ref) {

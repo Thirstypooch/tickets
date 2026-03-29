@@ -1,7 +1,9 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
 import { EventsService } from './events.service';
 import { EventFilterDto } from './dto/event-filter.dto';
+import { Public } from '../common/decorators/current-user.decorator';
 
+@Public()
 @Controller('events')
 export class EventsController {
   constructor(private eventsService: EventsService) {}

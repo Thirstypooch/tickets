@@ -30,6 +30,12 @@ export class SupabaseAuthGuard implements CanActivate {
       [context.getHandler(), context.getClass()],
     );
 
+    // If Supabase isn't configured, allow public/optional, block auth-required
+    if (!this.supabase.isConfigured) {
+      if (isOptional) return true;
+      throw new UnauthorizedException('Auth service not configured');
+    }
+
     const request = this.getRequest(context);
     const token = this.extractToken(request);
 
