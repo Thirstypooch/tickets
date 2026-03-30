@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
-import '../../providers/search_providers.dart';
+import '../../../data/models/event_filter.dart';
+import '../../providers/event_providers.dart';
 
 class SearchDialog extends ConsumerStatefulWidget {
   const SearchDialog({super.key});
@@ -19,9 +21,9 @@ class _SearchDialogState extends ConsumerState<SearchDialog> {
   @override
   void initState() {
     super.initState();
-    final params = ref.read(searchParamsProvider);
-    _keywordController = TextEditingController(text: params.keyword);
-    _cityController = TextEditingController(text: params.city);
+    final filter = ref.read(eventFilterProvider);
+    _keywordController = TextEditingController(text: filter.keyword);
+    _cityController = TextEditingController(text: filter.city);
   }
 
   @override
@@ -81,16 +83,31 @@ class _SearchDialogState extends ConsumerState<SearchDialog> {
             const SizedBox(height: 24),
             SizedBox(
               width: double.infinity,
-              child: ElevatedButton.icon(
+              child: MaterialButton(
                 onPressed: () {
-                  ref.read(searchParamsProvider.notifier).state = SearchParams(
+                  // Update the eventFilterProvider so the events list refreshes
+                  ref.read(eventFilterProvider.notifier).state = EventFilter(
                     keyword: _keywordController.text,
                     city: _cityController.text,
                   );
                   Navigator.pop(context);
+                  // Navigate to events page to show results
+                  context.go('/events');
                 },
-                icon: const Icon(LucideIcons.search, size: 18),
-                label: const Text('Search Events'),
+                color: AppColors.brand,
+                textColor: Colors.white,
+                padding: const EdgeInsets.symmetric(vertical: 14),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(LucideIcons.search, size: 18),
+                    SizedBox(width: 8),
+                    Text('Search Events', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500)),
+                  ],
+                ),
               ),
             ),
             SizedBox(height: MediaQuery.of(context).viewInsets.bottom),

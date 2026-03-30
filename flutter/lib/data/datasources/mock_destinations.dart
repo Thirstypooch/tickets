@@ -12,7 +12,7 @@ class MockDestinations {
     Destination(
       name: 'Los Angeles',
       properties: '1,800+ events',
-      image: 'https://images.pexels.com/photos/161963/downtown-los-angeles-buildings-city-161963.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop',
+      image: 'https://images.pexels.com/photos/2695679/pexels-photo-2695679.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop',
     ),
     Destination(
       name: 'Miami',

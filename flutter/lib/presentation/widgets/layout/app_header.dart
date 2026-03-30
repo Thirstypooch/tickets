@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../../core/constants/app_colors.dart';
-import '../../providers/auth_providers.dart';
 import '../../providers/theme_providers.dart';
 
 class AppHeader extends ConsumerWidget implements PreferredSizeWidget {
@@ -14,7 +13,6 @@ class AppHeader extends ConsumerWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isAuth = ref.watch(isAuthenticatedProvider);
     final screenWidth = MediaQuery.of(context).size.width;
     final isDesktop = screenWidth >= 768;
 
@@ -47,8 +45,8 @@ class AppHeader extends ConsumerWidget implements PreferredSizeWidget {
             child: const Text('Events'),
           ),
           TextButton(
-            onPressed: () {},
-            child: const Text('Browse'),
+            onPressed: () => context.go('/dashboard'),
+            child: const Text('Dashboard'),
           ),
         ],
         // Theme toggle
@@ -65,52 +63,6 @@ class AppHeader extends ConsumerWidget implements PreferredSizeWidget {
                 current == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark;
           },
         ),
-        if (isAuth) ...[
-          PopupMenuButton<String>(
-            offset: const Offset(0, 48),
-            onSelected: (value) {
-              switch (value) {
-                case 'dashboard':
-                  context.go('/dashboard');
-                case 'properties':
-                  context.go('/events');
-                case 'logout':
-                  ref.read(isAuthenticatedProvider.notifier).state = false;
-              }
-            },
-            itemBuilder: (context) => [
-              const PopupMenuItem(value: 'dashboard', child: Text('Dashboard')),
-              const PopupMenuItem(value: 'events', child: Text('My Events')),
-              const PopupMenuDivider(),
-              const PopupMenuItem(value: 'logout', child: Text('Log Out')),
-            ],
-            child: const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8),
-              child: CircleAvatar(
-                radius: 16,
-                backgroundColor: AppColors.brand,
-                child: Icon(LucideIcons.user, size: 16, color: Colors.white),
-              ),
-            ),
-          ),
-        ] else ...[
-          TextButton(
-            onPressed: () {
-              ref.read(isAuthenticatedProvider.notifier).state = true;
-            },
-            child: const Text('Log In'),
-          ),
-          if (isDesktop)
-            Padding(
-              padding: const EdgeInsets.only(right: 8),
-              child: ElevatedButton(
-                onPressed: () {
-                  ref.read(isAuthenticatedProvider.notifier).state = true;
-                },
-                child: const Text('Sign Up'),
-              ),
-            ),
-        ],
         if (!isDesktop)
           Builder(
             builder: (context) => IconButton(
