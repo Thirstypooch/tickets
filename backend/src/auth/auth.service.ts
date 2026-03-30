@@ -6,15 +6,31 @@ export class AuthService {
   constructor(private supabase: SupabaseService) {}
 
   async signUp(email: string, password: string, displayName?: string) {
-    const { data, error } = await this.supabase.admin.auth.signUp({
+    const name = displayName ?? email.split('@')[0];
+
+    // Use admin API to auto-confirm users (no email verification for demo)
+    const { data, error } = await this.supabase.admin.auth.admin.createUser({
       email,
       password,
-      options: {
-        data: { display_name: displayName ?? email.split('@')[0] },
-      },
+      email_confirm: true,
+      user_metadata: { display_name: name },
     });
     if (error) throw new UnauthorizedException(error.message);
-    return { user: data.user, session: data.session };
+
+    // Ensure profile has the display_name
+    if (data.user) {
+      await this.supabase.admin
+        .from('profiles')
+        .upsert({
+          id: data.user.id,
+          display_name: name,
+          avatar_url: '',
+        }, { onConflict: 'id' });
+    }
+
+    // Auto-login: return a session with token
+    const loginResult = await this.signIn(email, password);
+    return loginResult;
   }
 
   async signIn(email: string, password: string) {
@@ -28,8 +44,8 @@ export class AuthService {
     };
   }
 
-  async signOut(accessToken: string) {
-    const { error } = await this.supabase.admin.auth.admin.signOut(accessToken);
+  async signOut() {
+    const { error } = await this.supabase.admin.auth.signOut();
     if (error) throw new UnauthorizedException(error.message);
     return { message: 'Signed out' };
   }

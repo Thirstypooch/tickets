@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Req } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Public } from '../common/decorators/current-user.decorator';
 
@@ -19,7 +19,7 @@ export class AuthController {
   }
 
   @Post('logout')
-  signOut(@Req() req: any) {
-    return this.authService.signOut(req.accessToken);
+  signOut() {
+    return this.authService.signOut();
   }
 }
