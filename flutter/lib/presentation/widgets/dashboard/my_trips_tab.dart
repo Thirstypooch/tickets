@@ -1,67 +1,53 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import '../../../core/constants/app_colors.dart';
 import '../../providers/booking_providers.dart';
 import '../common/empty_state.dart';
 import 'trip_card.dart';
 
+/// Shows upcoming bookings — no nested tabs to avoid double underlines.
 class MyTripsTab extends ConsumerWidget {
   const MyTripsTab({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return DefaultTabController(
-      length: 2,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const TabBar(tabs: [Tab(text: 'Upcoming'), Tab(text: 'Past')]),
-          const SizedBox(height: 16),
-          SizedBox(
-            height: 800,
-            child: TabBarView(
-              children: [
-                _BookingList(provider: upcomingBookingsProvider, emptyLabel: 'upcoming'),
-                _BookingList(provider: pastBookingsProvider, emptyLabel: 'past'),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
+    final bookings = ref.watch(upcomingBookingsProvider);
 
-class _BookingList extends ConsumerWidget {
-  final FutureProvider provider;
-  final String emptyLabel;
-  const _BookingList({required this.provider, required this.emptyLabel});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final bookings = ref.watch(provider);
-    return bookings.when(
-      data: (data) {
-        final list = data as List;
-        if (list.isEmpty) {
-          return EmptyState(
-            icon: LucideIcons.ticket,
-            title: 'No $emptyLabel events',
-            subtitle: emptyLabel == 'upcoming'
-                ? 'Browse events and book your next experience!'
-                : 'Your past events will appear here.',
-          );
-        }
-        return ListView.separated(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: list.length,
-          separatorBuilder: (_, __) => const SizedBox(height: 16),
-          itemBuilder: (context, index) => BookingCard(booking: list[index]),
-        );
-      },
-      loading: () => const Center(child: CircularProgressIndicator()),
-      error: (e, _) => Center(child: Text('Error: $e')),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          'Upcoming Events',
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+        ),
+        const SizedBox(height: 4),
+        const Text(
+          'Your confirmed reservations',
+          style: TextStyle(fontSize: 14, color: AppColors.gray500),
+        ),
+        const SizedBox(height: 16),
+        bookings.when(
+          data: (list) {
+            if (list.isEmpty) {
+              return const EmptyState(
+                icon: LucideIcons.ticket,
+                title: 'No upcoming events',
+                subtitle: 'Browse events and book your next experience!',
+              );
+            }
+            return ListView.separated(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: list.length,
+              separatorBuilder: (_, __) => const SizedBox(height: 16),
+              itemBuilder: (context, index) => BookingCard(booking: list[index]),
+            );
+          },
+          loading: () => const Center(child: CircularProgressIndicator()),
+          error: (e, _) => Center(child: Text('Error: $e')),
+        ),
+      ],
     );
   }
 }

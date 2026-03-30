@@ -37,26 +37,17 @@ class CribsSearchBar extends StatelessWidget {
               size: compact ? 18 : 20,
               color: AppColors.gray500,
             ),
-            SizedBox(width: compact ? 8 : 12),
-            if (!compact) ...[
-              Expanded(
-                child: Row(
-                  children: [
-                    _SearchSection('Where', 'Search destinations'),
-                    _Divider(),
-                    _SearchSection('Check in', 'Add dates'),
-                    _Divider(),
-                    _SearchSection('Check out', 'Add dates'),
-                    _Divider(),
-                    _SearchSection('Who', 'Add guests'),
-                  ],
+            SizedBox(width: compact ? 8 : 16),
+            Flexible(
+              child: Text(
+                'Search events, artists, venues...',
+                style: TextStyle(
+                  fontSize: compact ? 14 : 15,
+                  color: AppColors.gray500,
                 ),
+                overflow: TextOverflow.ellipsis,
               ),
-            ] else
-              const Text(
-                'Search destinations',
-                style: TextStyle(fontSize: 14, color: AppColors.gray500),
-              ),
+            ),
           ],
         ),
       ),
@@ -69,52 +60,6 @@ class CribsSearchBar extends StatelessWidget {
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (context) => const SearchDialog(),
-    );
-  }
-}
-
-class _SearchSection extends StatelessWidget {
-  final String label;
-  final String placeholder;
-
-  const _SearchSection(this.label, this.placeholder);
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              label,
-              style: const TextStyle(
-                fontSize: 11,
-                fontWeight: FontWeight.w600,
-                color: AppColors.gray900,
-              ),
-            ),
-            const SizedBox(height: 2),
-            Text(
-              placeholder,
-              style: const TextStyle(fontSize: 13, color: AppColors.gray400),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _Divider extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 1,
-      height: 28,
-      color: AppColors.gray200,
     );
   }
 }

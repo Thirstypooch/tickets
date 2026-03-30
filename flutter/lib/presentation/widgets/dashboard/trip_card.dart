@@ -92,9 +92,12 @@ class _Content extends StatelessWidget {
                       children: [
                         const Icon(LucideIcons.mapPin, size: 14, color: AppColors.gray500),
                         const SizedBox(width: 4),
-                        Text(
-                          '${snap.venueName} · ${snap.city}',
-                          style: const TextStyle(fontSize: 13, color: AppColors.gray500),
+                        Flexible(
+                          child: Text(
+                            '${snap.venueName} · ${snap.city}',
+                            style: const TextStyle(fontSize: 13, color: AppColors.gray500),
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
                       ],
                     ),
@@ -119,10 +122,14 @@ class _Content extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                '${booking.quantity} ticket${booking.quantity > 1 ? 's' : ''} · \$${booking.totalPrice.toStringAsFixed(0)}',
-                style: const TextStyle(fontSize: 13, color: AppColors.gray600),
+              Flexible(
+                child: Text(
+                  '${booking.quantity} ticket${booking.quantity > 1 ? 's' : ''} · \$${booking.totalPrice.toStringAsFixed(0)}',
+                  style: const TextStyle(fontSize: 13, color: AppColors.gray600),
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
+              const SizedBox(width: 8),
               if (booking.status == 'confirmed')
                 OutlinedButton.icon(
                   onPressed: () {},

@@ -124,21 +124,23 @@ class EventCard extends StatelessWidget {
                       ],
                     ],
                   ),
-                  const SizedBox(height: 4),
-                  Row(
-                    children: [
-                      const Icon(LucideIcons.mapPin, size: 13, color: AppColors.gray500),
-                      const SizedBox(width: 4),
-                      Expanded(
-                        child: Text(
-                          '${event.venueName} · ${event.location}',
-                          style: const TextStyle(fontSize: 13, color: AppColors.gray500),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
+                  if (event.venueName.isNotEmpty || event.city.isNotEmpty) ...[
+                    const SizedBox(height: 4),
+                    Row(
+                      children: [
+                        const Icon(LucideIcons.mapPin, size: 13, color: AppColors.gray500),
+                        const SizedBox(width: 4),
+                        Flexible(
+                          child: Text(
+                            [event.venueName, event.location].where((s) => s.isNotEmpty).join(' · '),
+                            style: const TextStyle(fontSize: 13, color: AppColors.gray500),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    ),
+                  ],
                 ],
               ),
             ),

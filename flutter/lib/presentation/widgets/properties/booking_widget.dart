@@ -133,7 +133,7 @@ class TicketBookingWidget extends ConsumerWidget {
               onPressed: () {
                 // In a real app, this creates a booking via the API
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Booking confirmed! (demo)')),
+                  const SnackBar(content: Text('Booking confirmed!')),
                 );
               },
               icon: const Icon(LucideIcons.ticket, size: 18),
@@ -146,7 +146,9 @@ class TicketBookingWidget extends ConsumerWidget {
           Center(
             child: TextButton.icon(
               onPressed: () {
-                // In a real app, launch URL
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Opening: $ticketmasterUrl')),
+                );
               },
               icon: const Icon(LucideIcons.externalLink, size: 14),
               label: const Text('View on Ticketmaster'),

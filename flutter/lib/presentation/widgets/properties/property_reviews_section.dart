@@ -48,7 +48,25 @@ class PropertyReviewsSection extends StatelessWidget {
         ),
         const SizedBox(height: 24),
 
+        // Empty state
+        if (reviews.isEmpty)
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 32),
+            child: const Center(
+              child: Column(
+                children: [
+                  Icon(LucideIcons.messageSquare, size: 40, color: AppColors.gray300),
+                  SizedBox(height: 12),
+                  Text('No reviews yet', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: AppColors.gray500)),
+                  SizedBox(height: 4),
+                  Text('Be the first to share your experience!', style: TextStyle(fontSize: 14, color: AppColors.gray400)),
+                ],
+              ),
+            ),
+          ),
+
         // Review cards
+        if (reviews.isNotEmpty)
         LayoutBuilder(
           builder: (context, constraints) {
             final isWide = constraints.maxWidth >= 600;

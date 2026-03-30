@@ -51,7 +51,11 @@ class _EventDetailScreenState extends ConsumerState<EventDetailScreen> {
                   Row(
                     children: [
                       TextButton.icon(
-                        onPressed: () {},
+                        onPressed: () {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Share: ${event.url}')),
+                          );
+                        },
                         icon: const Icon(LucideIcons.share, size: 16),
                         label: const Text('Share'),
                       ),

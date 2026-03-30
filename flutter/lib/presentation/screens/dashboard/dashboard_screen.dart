@@ -34,9 +34,9 @@ class DashboardScreen extends StatelessWidget {
                   const SizedBox(height: 32),
                   const TabBar(
                     tabs: [
-                      Tab(text: 'My Trips'),
-                      Tab(text: 'My Properties'),
-                      Tab(text: 'My Bookings'),
+                      Tab(text: 'My Events'),
+                      Tab(text: 'Saved'),
+                      Tab(text: 'History'),
                     ],
                   ),
                   const SizedBox(height: 24),
