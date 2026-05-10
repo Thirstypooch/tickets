@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mapa del proyecto · Tickets</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/typescript.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dart.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/graphql.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+  <style>
+    :root {
+      --bg: #f7f7f3;
+      --surface: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --accent: #2563eb;
+      --code-bg: #f8f8f4;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    header.top {
+      padding: 56px 32px 40px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    header.top h1 {
+      font-size: clamp(32px, 4vw, 44px);
+      margin: 0 0 12px;
+      letter-spacing: -0.02em;
+    }
+    header.top p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 16px;
+    }
+    header.top a {
+      color: var(--accent);
+      text-decoration: none;
+      font-family: ui-monospace, Menlo, Monaco, monospace;
+      font-size: 14px;
+    }
+
+    main {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 32px 80px;
+    }
+
+    @media (max-width: 700px) {
+      header.top, main { padding-left: 16px; padding-right: 16px; }
+    }
+
+    section.block {
+      margin-bottom: 64px;
+    }
+
+    section.block .num {
+      font-family: ui-monospace, Menlo, Monaco, monospace;
+      font-size: 13px;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+    }
+    section.block h2 {
+      font-size: clamp(22px, 2.5vw, 28px);
+      margin: 4px 0 6px;
+      letter-spacing: -0.01em;
+    }
+    section.block p.lead {
+      margin: 0 0 22px;
+      color: var(--muted);
+      font-size: 15px;
+      max-width: 80ch;
+    }
+
+    .diagram {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 36px 24px;
+      overflow-x: auto;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    .diagram .mermaid {
+      display: inline-block;
+      min-width: 100%;
+    }
+    .diagram svg { max-width: 100%; height: auto; }
+
+    /* messageText de sequence diagrams en negro */
+    .mermaid .messageText,
+    .mermaid .messageText tspan {
+      fill: #000000 !important;
+      font-weight: 600 !important;
+    }
+
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px 22px;
+      overflow-x: auto;
+      font-size: 13.5px;
+      line-height: 1.6;
+      margin: 0;
+      font-family: ui-monospace, "SF Mono", Menlo, Monaco, Consolas, monospace;
+    }
+    code:not(pre code) {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-size: 0.92em;
+      font-family: ui-monospace, Menlo, Monaco, monospace;
+    }
+
+    .code-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 12px;
+    }
+    @media (max-width: 900px) { .code-row { grid-template-columns: 1fr; } }
+    .code-row .label {
+      font-family: ui-monospace, Menlo, Monaco, monospace;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+  </style>
+</head>
+<body>
+
+<header class="top">
+  <h1>Tickets — Mapa del proyecto</h1>
+  <p>Arquitectura, flujos y código real del repositorio · <a href="https://github.com/Thirstypooch/tickets">github.com/Thirstypooch/tickets</a></p>
+</header>
+
+<main>
+
+  <!-- 1 -->
+  <section class="block">
+    <div class="num">01</div>
+    <h2>Arquitectura del sistema</h2>
+    <p class="lead">El cliente Flutter habla solo con el backend NestJS. El backend es el único integrador con Supabase y con Ticketmaster.</p>
+    <div class="diagram"><div class="mermaid">
+flowchart LR
+  U(["Usuario"]):::user
+  F["Flutter<br/>iOS · Android · Web"]:::app
+  N["NestJS API<br/>Apollo GraphQL + REST"]:::api
+  C[("Caché<br/>en memoria")]:::cache
+  TM["Ticketmaster<br/>Discovery API"]:::ext
+  SB[("Supabase<br/>Postgres")]:::ext
+  SA["Supabase<br/>Auth"]:::ext
+
+  U ==> F
+  F ==>|GraphQL / REST| N
+  N --> C
+  N -->|Axios| TM
+  N -->|cliente JS| SB
+  N -->|JWT| SA
+
+  classDef user fill:#0f172a,color:#f1f5f9,stroke:#0f172a,stroke-width:2px;
+  classDef app fill:#dbeafe,stroke:#1e40af,color:#0f172a,stroke-width:2px;
+  classDef api fill:#fce7f3,stroke:#9d174d,color:#0f172a,stroke-width:2px;
+  classDef cache fill:#e2e8f0,stroke:#475569,color:#0f172a,stroke-width:2px;
+  classDef ext fill:#fef3c7,stroke:#b45309,color:#0f172a,stroke-width:2px;
+    </div></div>
+  </section>
+
+  <!-- 2 -->
+  <section class="block">
+    <div class="num">02</div>
+    <h2>Módulos del backend y sus dependencias</h2>
+    <p class="lead">Doce módulos NestJS. <code>SupabaseModule</code> y <code>TicketmasterModule</code> son los puentes al exterior. Cualquier feature que persiste pasa por Supabase; cualquier feature que consume eventos pasa por Ticketmaster.</p>
+    <div class="diagram"><div class="mermaid">
+flowchart TB
+  App["AppModule"]:::root
+
+  App --> Auth["AuthModule"]:::feat
+  App --> Users["UsersModule"]:::feat
+  App --> Events["EventsModule"]:::feat
+  App --> Bookings["BookingsModule"]:::feat
+  App --> Favorites["FavoritesModule"]:::feat
+  App --> Reviews["ReviewsModule"]:::feat
+  App --> Dashboard["DashboardModule"]:::feat
+  App --> Venues["VenuesModule"]:::feat
+
+  App --> TM["TicketmasterModule"]:::infra
+  App --> SB["SupabaseModule"]:::infra
+  App --> Common["CommonModule<br/>guard + decorator"]:::infra
+  App --> Config["ConfigModule"]:::infra
+
+  Events --> TM
+  Events --> Reviews
+  Events --> Favorites
+  Venues --> TM
+
+  Auth --> SB
+  Users --> SB
+  Bookings --> SB
+  Favorites --> SB
+  Reviews --> SB
+  Dashboard --> SB
+
+  TM -.HTTP.-> TMext[("Ticketmaster<br/>Discovery API")]:::ext
+  SB -.SDK.-> SBext[("Supabase<br/>Postgres + Auth")]:::ext
+
+  classDef root fill:#0f172a,color:#f1f5f9,stroke:#0f172a,stroke-width:2px;
+  classDef feat fill:#dbeafe,stroke:#1e40af,color:#0f172a,stroke-width:2px;
+  classDef infra fill:#ede9fe,stroke:#6d28d9,color:#0f172a,stroke-width:2px;
+  classDef ext fill:#fef3c7,stroke:#b45309,color:#0f172a,stroke-width:2px;
+    </div></div>
+  </section>
+
+  <!-- 3 -->
+  <section class="block">
+    <div class="num">03</div>
+    <h2>Anatomía de un feature backend — Events</h2>
+    <p class="lead">El resolver <code>EventsResolver</code> no es un endpoint plano: orquesta cuatro servicios para devolver el detalle de un evento. Esto se repite en cada feature.</p>
+    <div class="diagram"><div class="mermaid">
+flowchart LR
+  Client["Cliente<br/>Flutter"]:::cli
+
+  subgraph EM["EventsModule"]
+    direction TB
+    ER["EventsResolver<br/><br/>@Query events<br/>@Query featuredEvents<br/>@Query eventDetail"]:::resolver
+    EC["EventsController<br/><br/>GET /events<br/>GET /events/:id<br/>GET /events/featured"]:::resolver
+    ES["EventsService<br/><br/>search filter<br/>getById id<br/>getFeatured"]:::service
+  end
+
+  TMS["TicketmasterService<br/><br/>searchEvents<br/>getEvent"]:::service
+  TMT["TicketmasterTransformer<br/><br/>JSON crudo → Event"]:::service
+  RVS["ReviewsService<br/><br/>getByEventId<br/>getAverageRating"]:::service
+  FVS["FavoritesService<br/><br/>isFavorited"]:::service
+
+  Client -->|GraphQL| ER
+  Client -->|REST| EC
+
+  ER --> ES
+  ER --> TMS
+  ER --> RVS
+  ER --> FVS
+  EC --> ES
+
+  ES --> TMS
+  TMS --> TMT
+  TMT --> External[("Ticketmaster<br/>Discovery API")]:::ext
+
+  classDef cli fill:#dbeafe,stroke:#1e40af,color:#0f172a,stroke-width:2px;
+  classDef resolver fill:#fce7f3,stroke:#9d174d,color:#0f172a,stroke-width:2px;
+  classDef service fill:#ecfdf5,stroke:#047857,color:#0f172a,stroke-width:2px;
+  classDef ext fill:#fef3c7,stroke:#b45309,color:#0f172a,stroke-width:2px;
+    </div></div>
+<pre><code class="language-typescript">@Resolver(() =&gt; Event)
+export class EventsResolver {
+  constructor(
+    private eventsService: EventsService,
+    private tm: TicketmasterService,
+    private reviewsService: ReviewsService,
+    private favoritesService: FavoritesService,
+  ) {}
+
+  @Query(() =&gt; EventDetail, { name: 'eventDetail' })
+  async getEventDetail(@Args('id') id: string): Promise&lt;EventDetail&gt; {
+    const detail = await this.eventsService.getById(id);
+
+    const [reviews, reviewCount, averageRating] = await Promise.all([
+      this.reviewsService.getByEventId(id),
+      this.reviewsService.getCountByEventId(id),
+      this.reviewsService.getAverageRatingByEventId(id),
+    ]);
+
+    const similar = await this.tm.searchEvents({
+      category: detail.category, city: detail.city, size: 5,
+    });
+
+    return { ...detail, reviews, reviewCount, averageRating,
+             similarEvents: similar.events.filter(e =&gt; e.id !== id) };
+  }
+}</code></pre>
+  </section>
+
+  <!-- 4 -->
+  <section class="block">
+    <div class="num">04</div>
+    <h2>Tipos y relaciones del schema GraphQL</h2>
+    <p class="lead">El schema se autogenera en <code>backend/src/schema.gql</code>. Estas son las queries reales y los tipos que retornan, con sus relaciones internas.</p>
+    <div class="diagram"><div class="mermaid">
+flowchart TB
+  Q["Query"]:::root
+  M["Mutation"]:::root
+
+  Q -->|events filter| PE["PaginatedEvents<br/>events page pages total"]:::comp
+  Q -->|featuredEvents| EV["Event<br/>id name date city<br/>venueName image priceMin"]:::type
+  Q -->|eventDetail id| ED["EventDetail<br/>+ description venue<br/>+ reviews similarEvents<br/>+ attractions images"]:::type
+  Q -->|dashboardStats| DS["DashboardStat<br/>title value trend icon"]:::type
+  Q -->|myBookings| BK["Booking<br/>id userId tmEventId<br/>quantity unitPrice<br/>totalPrice status"]:::type
+  Q -->|upcomingBookings| BK
+  Q -->|pastBookings| BK
+
+  M -->|createBooking| BK
+
+  PE -->|events| EV
+  ED -->|reviews| RV["Review<br/>rating comment<br/>userName userAvatar"]:::type
+  ED -->|venue| VN["Venue<br/>name address<br/>city country<br/>lat lng"]:::type
+  ED -->|attractions| AT["Attraction<br/>id name"]:::type
+  ED -->|similarEvents| EV
+  BK -->|eventSnapshot| ES["EventSnapshot<br/>name date city<br/>venueName image"]:::type
+
+  classDef root fill:#0f172a,color:#f1f5f9,stroke:#0f172a,stroke-width:2px;
+  classDef type fill:#dbeafe,stroke:#1e40af,color:#0f172a,stroke-width:2px;
+  classDef comp fill:#ede9fe,stroke:#6d28d9,color:#0f172a,stroke-width:2px;
+    </div></div>
+  </section>
+
+  <!-- 5 -->
+  <section class="block">
+    <div class="num">05</div>
+    <h2>Capas del frontend</h2>
+    <p class="lead">Una sola dirección de dependencias: <strong>presentation → data → core</strong>. La UI nunca importa Dio. Toca un provider; el provider toca un repositorio; el repositorio toca el cliente HTTP.</p>
+    <div class="diagram"><div class="mermaid">
+flowchart TB
+  subgraph PR["capa presentation"]
+    direction LR
+    SC["Screens<br/>Home · Events · Detail · Dashboard"]:::ui
+    WD["Widgets<br/>EventCard · FilterPanel · SearchBar"]:::ui
+    PV["Providers Riverpod<br/>eventsProvider · eventFilterProvider<br/>eventDetailProvider · authProvider"]:::pv
+  end
+
+  subgraph DT["capa data"]
+    direction LR
+    RP["Repositories<br/><br/>EventRepository (contrato)<br/>ApiEventRepository (real)<br/>MockEventRepository (offline)"]:::repo
+    MD["Models Freezed<br/>Event · EventDetail<br/>Booking · Review"]:::model
+  end
+
+  subgraph CR["capa core"]
+    direction LR
+    AC["ApiClient<br/>(Dio)"]:::core
+    RT["GoRouter"]:::core
+    TH["Theme + constants"]:::core
+  end
+
+  SC --> PV
+  WD --> PV
+  PV --> RP
+  RP --> AC
+  RP --> MD
+  AC -->|HTTP| API[("NestJS API")]:::ext
+
+  classDef ui fill:#dbeafe,stroke:#1e40af,color:#0f172a,stroke-width:2px;
+  classDef pv fill:#fce7f3,stroke:#9d174d,color:#0f172a,stroke-width:2px;
+  classDef repo fill:#ecfdf5,stroke:#047857,color:#0f172a,stroke-width:2px;
+  classDef model fill:#ede9fe,stroke:#6d28d9,color:#0f172a,stroke-width:2px;
+  classDef core fill:#e2e8f0,stroke:#475569,color:#0f172a,stroke-width:2px;
+  classDef ext fill:#fef3c7,stroke:#b45309,color:#0f172a,stroke-width:2px;
+    </div></div>
+<pre><code class="language-dart">// data/repositories/event_repository.dart — contrato abstracto
+abstract class EventRepository {
+  Future&lt;PaginatedEvents&gt; getEvents(EventFilter filter);
+  Future&lt;List&lt;EventSummary&gt;&gt; getFeaturedEvents();
+  Future&lt;EventDetail&gt; getEventById(String id);
+}
+
+// Dos implementaciones intercambiables:
+class ApiEventRepository  implements EventRepository { /* Dio + NestJS */ }
+class MockEventRepository implements EventRepository { /* JSON local */ }</code></pre>
+  </section>
+
+  <!-- 6 -->
+  <section class="block">
+    <div class="num">06</div>
+    <h2>Grafo de providers Riverpod (feature Events)</h2>
+    <p class="lead">Los providers no son globales sueltos: forman un grafo de dependencias. Cuando <code>eventFilterProvider</code> cambia, <code>eventsProvider</code> se invalida y refetchea automáticamente.</p>
+    <div class="diagram"><div class="mermaid">
+flowchart TB
+  RP["eventRepositoryProvider<br/>Provider EventRepository<br/><br/>devuelve ApiEventRepository"]:::infra
+
+  FP["eventFilterProvider<br/>StateProvider EventFilter<br/><br/>keyword · city · category"]:::state
+
+  EV["eventsProvider<br/>FutureProvider PaginatedEvents"]:::async
+  FEV["featuredEventsProvider<br/>FutureProvider List EventSummary"]:::async
+  EDP["eventDetailProvider<br/>FutureProvider.family EventDetail, String"]:::async
+
+  UI1["EventsScreen<br/>ref.watch eventsProvider"]:::ui
+  UI2["HomeScreen<br/>ref.watch featuredEventsProvider"]:::ui
+  UI3["EventDetailScreen<br/>ref.watch eventDetailProvider id"]:::ui
+  UI4["FilterPanel<br/>ref.read eventFilterProvider.notifier"]:::ui
+
+  RP --> EV
+  RP --> FEV
+  RP --> EDP
+  FP -.invalida.-> EV
+
+  EV --> UI1
+  FEV --> UI2
+  EDP --> UI3
+  UI4 -.actualiza.-> FP
+
+  classDef infra fill:#ecfdf5,stroke:#047857,color:#0f172a,stroke-width:2px;
+  classDef state fill:#fef3c7,stroke:#b45309,color:#0f172a,stroke-width:2px;
+  classDef async fill:#dbeafe,stroke:#1e40af,color:#0f172a,stroke-width:2px;
+  classDef ui fill:#fce7f3,stroke:#9d174d,color:#0f172a,stroke-width:2px;
+    </div></div>
+<pre><code class="language-dart">final eventRepositoryProvider = Provider&lt;EventRepository&gt;((ref) {
+  return ApiEventRepository();
+});
+
+final eventFilterProvider = StateProvider&lt;EventFilter&gt;((ref) {
+  return const EventFilter();
+});
+
+final eventsProvider = FutureProvider&lt;PaginatedEvents&gt;((ref) {
+  final filter = ref.watch(eventFilterProvider);           // se re-ejecuta si cambia
+  return ref.watch(eventRepositoryProvider).getEvents(filter);
+});
+
+final eventDetailProvider =
+  FutureProvider.family&lt;EventDetail, String&gt;((ref, id) {
+    return ref.watch(eventRepositoryProvider).getEventById(id);
+  });</code></pre>
+  </section>
+
+  <!-- 7 -->
+  <section class="block">
+    <div class="num">07</div>
+    <h2>Mapa de navegación (GoRouter)</h2>
+    <p class="lead">Todo vive dentro de un <code>ShellRoute</code> que envuelve cada pantalla en <code>AppScaffold</code>. Cuatro rutas, una con parámetro dinámico.</p>
+    <div class="diagram"><div class="mermaid">
+flowchart TB
+  R(["/"]):::root
+
+  R --> Shell["ShellRoute<br/>AppScaffold child"]:::shell
+
+  Shell --> H["/<br/>HomeScreen"]:::route
+  Shell --> E["/events<br/>EventsScreen"]:::route
+  Shell --> ED["/events/:id<br/>EventDetailScreen<br/>pathParameters['id']"]:::routeDyn
+  Shell --> D["/dashboard<br/>DashboardScreen"]:::route
+
+  H -.tap card.-> ED
+  E -.tap card.-> ED
+
+  classDef root fill:#0f172a,color:#f1f5f9,stroke:#0f172a,stroke-width:2px;
+  classDef shell fill:#ede9fe,stroke:#6d28d9,color:#0f172a,stroke-width:2px;
+  classDef route fill:#dbeafe,stroke:#1e40af,color:#0f172a,stroke-width:2px;
+  classDef routeDyn fill:#fce7f3,stroke:#9d174d,color:#0f172a,stroke-width:2px;
+    </div></div>
+<pre><code class="language-dart">final appRouter = GoRouter(
+  initialLocation: '/',
+  routes: [
+    ShellRoute(
+      builder: (context, state, child) =&gt; AppScaffold(child: child),
+      routes: [
+        GoRoute(path: '/',          builder: (_, __) =&gt; const HomeScreen()),
+        GoRoute(path: '/events',    builder: (_, __) =&gt; const EventsScreen()),
+        GoRoute(path: '/events/:id',
+                builder: (_, s) =&gt; EventDetailScreen(eventId: s.pathParameters['id']!)),
+        GoRoute(path: '/dashboard', builder: (_, __) =&gt; const DashboardScreen()),
+      ],
+    ),
+  ],
+);</code></pre>
+  </section>
+
+  <!-- 8 -->
+  <section class="block">
+    <div class="num">08</div>
+    <h2>Secuencia completa — cargar lista de eventos</h2>
+    <p class="lead">Cómo viaja una sola interacción desde el tap del usuario hasta el render de la grilla. El backend cachea: abrir la misma pantalla dos veces seguidas no genera dos llamadas a Ticketmaster.</p>
+    <div class="diagram"><div class="mermaid">
+sequenceDiagram
+  autonumber
+  participant U as Usuario
+  participant UI as EventsScreen
+  participant Pr as eventsProvider
+  participant Re as ApiEventRepository
+  participant Di as Dio
+  participant Ne as NestJS · EventsResolver
+  participant Ca as Caché
+  participant Ti as Ticketmaster
+
+  U->>UI: abre /events
+  UI->>Pr: ref.watch(eventsProvider)
+  Pr->>Re: getEvents(filter)
+  Re->>Di: GET /events?city=Lima
+  Di->>Ne: HTTP request
+  Ne->>Ca: cache.get(key)
+  alt hit
+    Ca-->>Ne: payload cacheado
+  else miss
+    Ne->>Ti: searchEvents(params)
+    Ti-->>Ne: JSON crudo
+    Note over Ne: TicketmasterTransformer<br/>mapea a Event
+    Ne->>Ca: cache.set(key, payload, TTL)
+  end
+  Ne-->>Di: PaginatedEvents
+  Di-->>Re: Response
+  Re-->>Pr: PaginatedEvents
+  Pr-->>UI: AsyncValue.data
+  UI-->>U: renderiza grilla con animación
+    </div></div>
+  </section>
+
+  <!-- 9 -->
+  <section class="block">
+    <div class="num">09</div>
+    <h2>Modelo de datos en Supabase</h2>
+    <p class="lead">Cuatro tablas propias. Los eventos no se guardan: viven en Ticketmaster y se referencian por <code>tm_event_id</code>. <code>event_snapshot</code> en <code>bookings</code> congela el evento al momento de comprar (por si Ticketmaster lo modifica después).</p>
+    <div class="diagram"><div class="mermaid">
+erDiagram
+  users ||--o{ bookings  : "1 a N"
+  users ||--o{ favorites : "1 a N"
+  users ||--o{ reviews   : "1 a N"
+
+  users {
+    uuid id PK
+    string email
+    string display_name
+    timestamp created_at
+  }
+
+  bookings {
+    uuid id PK
+    uuid user_id FK
+    string tm_event_id
+    int quantity
+    float unit_price
+    float total_price
+    string status
+    jsonb event_snapshot
+    timestamp created_at
+  }
+
+  favorites {
+    uuid id PK
+    uuid user_id FK
+    string tm_event_id
+    timestamp created_at
+  }
+
+  reviews {
+    uuid id PK
+    uuid user_id FK
+    string tm_event_id
+    int rating
+    text comment
+    timestamp created_at
+  }
+    </div></div>
+  </section>
+
+</main>
+
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: '#dbeafe',
+      primaryTextColor: '#0f172a',
+      primaryBorderColor: '#2563eb',
+      lineColor: '#334155',
+      secondaryColor: '#fce7f3',
+      secondaryTextColor: '#0f172a',
+      secondaryBorderColor: '#9d174d',
+      tertiaryColor: '#ecfdf5',
+      tertiaryTextColor: '#0f172a',
+      tertiaryBorderColor: '#047857',
+      edgeLabelBackground: '#ffffff',
+      labelBackground: '#ffffff',
+      labelTextColor: '#0f172a',
+      fontFamily: 'ui-monospace, "SF Mono", Menlo, Monaco, monospace',
+      fontSize: '17px'
+    },
+    flowchart: {
+      curve: 'basis',
+      htmlLabels: true,
+      padding: 24,
+      nodeSpacing: 70,
+      rankSpacing: 90,
+      useMaxWidth: true
+    },
+    sequence: {
+      actorMargin: 90,
+      messageMargin: 50,
+      boxMargin: 12,
+      noteMargin: 12,
+      useMaxWidth: true,
+      mirrorActors: true,
+      actorFontSize: 16,
+      noteFontSize: 14,
+      messageFontSize: 14
+    },
+    er: {
+      layoutDirection: 'TB',
+      entityPadding: 18,
+      useMaxWidth: true,
+      fontSize: 15
+    }
+  });
+  hljs.highlightAll();
+
+  // Post-render: fuerza estilos inline en los edge labels (gana sobre cualquier
+  // estilo de Mermaid porque los <span> generados están en namespace XHTML
+  // dentro de <foreignObject> y muchos selectores CSS no los alcanzan)
+  function fixEdgeLabels() {
+    document.querySelectorAll('.mermaid g.edgeLabel').forEach(function(g) {
+      var div = g.querySelector('foreignObject > div');
+      var span = g.querySelector('span');
+      if (div) {
+        div.style.cssText =
+          'background-color: #ffffff !important;' +
+          'padding: 3px 8px !important;' +
+          'border-radius: 4px !important;' +
+          'border: 1px solid #475569 !important;' +
+          'display: inline-block !important;' +
+          'opacity: 1 !important;';
+      }
+      if (span) {
+        span.style.cssText =
+          'color: #000000 !important;' +
+          'background-color: transparent !important;' +
+          'font-weight: 700 !important;' +
+          'font-size: 13px !important;' +
+          'opacity: 1 !important;' +
+          'font-family: ui-monospace, Menlo, Monaco, monospace !important;';
+      }
+    });
+  }
+
+  // Mermaid renderiza de forma asíncrona — corre el fix varias veces para asegurar
+  window.addEventListener('load', function() {
+    fixEdgeLabels();
+    setTimeout(fixEdgeLabels, 200);
+    setTimeout(fixEdgeLabels, 600);
+    setTimeout(fixEdgeLabels, 1500);
+  });
+</script>
+
+</body>
+</html>
