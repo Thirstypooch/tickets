@@ -133,7 +133,7 @@ class EventsScreen extends ConsumerWidget {
                                 childAspectRatio: 0.85,
                               ),
                               itemCount: 6,
-                              itemBuilder: (_, __) => const PropertySkeleton(),
+                              itemBuilder: (_, _) => const PropertySkeleton(),
                             );
                           },
                         ),

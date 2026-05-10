@@ -37,11 +37,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 // Simple segmented control instead of TabBar
                 Row(
                   children: [
-                    _TabButton('Mis Eventos', 0),
+                    _tabButton('Mis Eventos', 0),
                     const SizedBox(width: 8),
-                    _TabButton('Guardados', 1),
+                    _tabButton('Guardados', 1),
                     const SizedBox(width: 8),
-                    _TabButton('Historial', 2),
+                    _tabButton('Historial', 2),
                   ],
                 ),
                 const SizedBox(height: 24),
@@ -58,7 +58,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  Widget _TabButton(String label, int index) {
+  Widget _tabButton(String label, int index) {
     final selected = _selectedTab == index;
     return GestureDetector(
       onTap: () => setState(() => _selectedTab = index),

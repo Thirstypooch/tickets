@@ -94,15 +94,22 @@ class _EventFiltersPanelState extends ConsumerState<EventFiltersPanel> {
           // Category
           const Text('Categoría', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
           const SizedBox(height: 8),
-          ...EventFilter.categoryOptions.map((cat) => RadioListTile<String>(
-            title: Text(cat.label, style: const TextStyle(fontSize: 14)),
-            value: cat.value,
+          RadioGroup<String>(
             groupValue: _category,
-            onChanged: (v) => setState(() => _category = v!),
-            dense: true,
-            contentPadding: EdgeInsets.zero,
-            activeColor: AppColors.brand,
-          )),
+            onChanged: (v) => setState(() => _category = v ?? ''),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: EventFilter.categoryOptions
+                  .map((cat) => RadioListTile<String>(
+                        title: Text(cat.label, style: const TextStyle(fontSize: 14)),
+                        value: cat.value,
+                        dense: true,
+                        contentPadding: EdgeInsets.zero,
+                        activeColor: AppColors.brand,
+                      ))
+                  .toList(),
+            ),
+          ),
           const SizedBox(height: 24),
           const Divider(),
           const SizedBox(height: 16),

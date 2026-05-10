@@ -21,8 +21,8 @@ class HeroSection extends StatelessWidget {
             imageUrl:
                 'https://images.pexels.com/photos/1105666/pexels-photo-1105666.jpeg?auto=compress&cs=tinysrgb&w=1200&h=800&fit=crop',
             fit: BoxFit.cover,
-            placeholder: (_, __) => Container(color: AppColors.gray800),
-            errorWidget: (_, __, ___) => Container(color: AppColors.gray800),
+            placeholder: (_, _) => Container(color: AppColors.gray800),
+            errorWidget: (_, _, _) => Container(color: AppColors.gray800),
           ),
           // Gradient overlay
           Container(
