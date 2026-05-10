@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" font-family="-apple-system, 'SF Pro Display', sans-serif">
+  <!-- Title -->
+  <text x="450" y="40" text-anchor="middle" font-size="22" font-weight="700" fill="#0A0A0A">git worktree · mental model</text>
+
+  <!-- Working tree 1: main -->
+  <g>
+    <rect x="60" y="100" width="220" height="130" rx="12" fill="#E0E7FF" stroke="#4F46E5" stroke-width="2"/>
+    <text x="170" y="135" text-anchor="middle" font-size="13" font-weight="600" fill="#4F46E5">~/tickets</text>
+    <text x="170" y="160" text-anchor="middle" font-size="12" fill="#525252">branch: main</text>
+    <text x="170" y="180" text-anchor="middle" font-size="11" fill="#737373">flutter run · LIVE</text>
+    <text x="170" y="210" text-anchor="middle" font-size="22">🧑‍💻</text>
+  </g>
+
+  <!-- Working tree 2: feat A (Claude) -->
+  <g>
+    <rect x="340" y="100" width="220" height="130" rx="12" fill="#FCE7F3" stroke="#DB2777" stroke-width="2"/>
+    <text x="450" y="135" text-anchor="middle" font-size="13" font-weight="600" fill="#DB2777">~/tickets-feat-share</text>
+    <text x="450" y="160" text-anchor="middle" font-size="12" fill="#525252">branch: feat/share</text>
+    <text x="450" y="180" text-anchor="middle" font-size="11" fill="#737373">Claude codea acá</text>
+    <text x="450" y="210" text-anchor="middle" font-size="22">🤖</text>
+  </g>
+
+  <!-- Working tree 3: feat B (you exploring) -->
+  <g>
+    <rect x="620" y="100" width="220" height="130" rx="12" fill="#DCFCE7" stroke="#16A34A" stroke-width="2"/>
+    <text x="730" y="135" text-anchor="middle" font-size="13" font-weight="600" fill="#16A34A">~/tickets-explore</text>
+    <text x="730" y="160" text-anchor="middle" font-size="12" fill="#525252">branch: explore/idea</text>
+    <text x="730" y="180" text-anchor="middle" font-size="11" fill="#737373">vos exploras acá</text>
+    <text x="730" y="210" text-anchor="middle" font-size="22">🧪</text>
+  </g>
+
+  <!-- Lines from each worktree to .git -->
+  <line x1="170" y1="230" x2="450" y2="340" stroke="#737373" stroke-width="2" stroke-dasharray="6,4"/>
+  <line x1="450" y1="230" x2="450" y2="340" stroke="#737373" stroke-width="2" stroke-dasharray="6,4"/>
+  <line x1="730" y1="230" x2="450" y2="340" stroke="#737373" stroke-width="2" stroke-dasharray="6,4"/>
+
+  <!-- Shared .git -->
+  <g>
+    <ellipse cx="450" cy="380" rx="180" ry="50" fill="#FEF3C7" stroke="#D97706" stroke-width="2"/>
+    <text x="450" y="375" text-anchor="middle" font-size="20" font-weight="700" fill="#D97706">📦 .git</text>
+    <text x="450" y="400" text-anchor="middle" font-size="13" fill="#92400E">history compartida · una sola vez en disco</text>
+  </g>
+
+  <!-- Bottom legend -->
+  <text x="450" y="475" text-anchor="middle" font-size="13" fill="#525252">3 working trees · 3 branches · 1 .git</text>
+  <text x="450" y="498" text-anchor="middle" font-size="12" fill="#737373" font-style="italic">commit en cualquiera → llega al .git compartido</text>
+</svg>
