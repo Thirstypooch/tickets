@@ -89,7 +89,7 @@ class EventCard extends StatelessWidget {
                           ],
                         ),
                         child: Text(
-                          'From \$${event.priceMin!.toStringAsFixed(0)}',
+                          'Desde \$${event.priceMin!.toStringAsFixed(0)}',
                           style: const TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w600,

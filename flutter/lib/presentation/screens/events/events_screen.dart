@@ -61,7 +61,7 @@ class EventsScreen extends ConsumerWidget {
                               );
                             },
                             icon: const Icon(LucideIcons.slidersHorizontal, size: 16),
-                            label: const Text('Filters'),
+                            label: const Text('Filtros'),
                           ),
                         ),
                       eventsAsync.when(
@@ -69,7 +69,7 @@ class EventsScreen extends ConsumerWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              '${paginated.total} events found',
+                              '${paginated.total} eventos encontrados',
                               style: const TextStyle(
                                 fontSize: 24,
                                 fontWeight: FontWeight.w700,
@@ -77,15 +77,15 @@ class EventsScreen extends ConsumerWidget {
                             ),
                             const SizedBox(height: 4),
                             const Text(
-                              'Discover concerts, sports, theatre & more',
+                              'Descubre conciertos, deportes, teatro y más',
                               style: TextStyle(fontSize: 14, color: AppColors.gray500),
                             ),
                             const SizedBox(height: 24),
                             if (paginated.events.isEmpty)
                               const EmptyState(
                                 icon: LucideIcons.ticket,
-                                title: 'No events found',
-                                subtitle: 'Try adjusting your filters to see more results.',
+                                title: 'No se encontraron eventos',
+                                subtitle: 'Probá ajustando los filtros para ver más resultados.',
                               )
                             else
                               LayoutBuilder(

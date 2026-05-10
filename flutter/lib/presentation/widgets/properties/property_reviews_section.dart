@@ -38,7 +38,7 @@ class PropertyReviewsSection extends StatelessWidget {
             ),
             const SizedBox(width: 8),
             Text(
-              '· $reviewCount reviews',
+              '· $reviewCount reseñas',
               style: const TextStyle(
                 fontSize: 16,
                 color: AppColors.gray600,
@@ -57,9 +57,9 @@ class PropertyReviewsSection extends StatelessWidget {
                 children: [
                   Icon(LucideIcons.messageSquare, size: 40, color: AppColors.gray300),
                   SizedBox(height: 12),
-                  Text('No reviews yet', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: AppColors.gray500)),
+                  Text('Aún no hay reseñas', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: AppColors.gray500)),
                   SizedBox(height: 4),
-                  Text('Be the first to share your experience!', style: TextStyle(fontSize: 14, color: AppColors.gray400)),
+                  Text('¡Sé el primero en compartir tu experiencia!', style: TextStyle(fontSize: 14, color: AppColors.gray400)),
                 ],
               ),
             ),

@@ -46,14 +46,17 @@ export interface VenueDto {
   imageUrl: string;
 }
 
-/** Pick the best image: 16_9 non-fallback → 16_9 any → first image → empty */
-function pickImage(images: { url: string; ratio: string; fallback: boolean }[]): string {
+/** Pick the best image: largest 16_9 non-fallback → largest 16_9 any → largest overall → empty */
+function pickImage(
+  images: { url: string; ratio: string; fallback: boolean; width: number; height: number }[],
+): string {
   if (!images?.length) return '';
-  const best = images.find((i) => i.ratio === '16_9' && !i.fallback);
-  if (best) return best.url;
-  const any16 = images.find((i) => i.ratio === '16_9');
-  if (any16) return any16.url;
-  return images[0].url;
+  const byWidthDesc = (a: { width: number }, b: { width: number }) => b.width - a.width;
+  const best = images.filter((i) => i.ratio === '16_9' && !i.fallback).sort(byWidthDesc);
+  if (best.length) return best[0].url;
+  const any16 = images.filter((i) => i.ratio === '16_9').sort(byWidthDesc);
+  if (any16.length) return any16[0].url;
+  return [...images].sort(byWidthDesc)[0].url;
 }
 
 /** Get all 16_9 images, deduped. Falls back to all images if none match. */

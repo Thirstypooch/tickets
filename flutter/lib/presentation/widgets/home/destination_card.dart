@@ -5,12 +5,16 @@ import '../../../data/models/destination.dart';
 
 class DestinationCard extends StatelessWidget {
   final Destination destination;
+  final VoidCallback? onTap;
 
-  const DestinationCard({super.key, required this.destination});
+  const DestinationCard({super.key, required this.destination, this.onTap});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return GestureDetector(
+      onTap: onTap,
+      behavior: HitTestBehavior.opaque,
+      child: Container(
       height: 192,
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
@@ -70,6 +74,7 @@ class DestinationCard extends StatelessWidget {
             ),
           ),
         ],
+      ),
       ),
     );
   }

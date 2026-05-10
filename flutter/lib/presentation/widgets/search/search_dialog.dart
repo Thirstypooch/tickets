@@ -59,15 +59,15 @@ class _SearchDialogState extends ConsumerState<SearchDialog> {
             ),
             const SizedBox(height: 24),
             const Text(
-              'Find Events',
+              'Encontrá Eventos',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
             ),
             const SizedBox(height: 24),
             TextField(
               controller: _keywordController,
               decoration: const InputDecoration(
-                labelText: 'What are you looking for?',
-                hintText: 'Artist, event, or venue',
+                labelText: '¿Qué estás buscando?',
+                hintText: 'Artista, evento o lugar',
                 prefixIcon: Icon(LucideIcons.search),
               ),
             ),
@@ -75,8 +75,8 @@ class _SearchDialogState extends ConsumerState<SearchDialog> {
             TextField(
               controller: _cityController,
               decoration: const InputDecoration(
-                labelText: 'Where?',
-                hintText: 'City name',
+                labelText: '¿Dónde?',
+                hintText: 'Nombre de la ciudad',
                 prefixIcon: Icon(LucideIcons.mapPin),
               ),
             ),
@@ -105,7 +105,7 @@ class _SearchDialogState extends ConsumerState<SearchDialog> {
                   children: [
                     Icon(LucideIcons.search, size: 18),
                     SizedBox(width: 8),
-                    Text('Search Events', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500)),
+                    Text('Buscar Eventos', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500)),
                   ],
                 ),
               ),

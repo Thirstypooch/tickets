@@ -22,10 +22,10 @@ class HomeScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Trending Events', style: AppTypography.h1),
+                Text('Eventos Destacados', style: AppTypography.h1),
                 const SizedBox(height: 8),
                 Text(
-                  'Don\'t miss the hottest events happening near you',
+                  'No te pierdas los eventos más populares cerca de ti',
                   style: AppTypography.body.copyWith(color: Colors.grey),
                 ),
                 const SizedBox(height: 24),
@@ -39,10 +39,10 @@ class HomeScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Explore Cities', style: AppTypography.h1),
+                Text('Explorar Ciudades', style: AppTypography.h1),
                 const SizedBox(height: 8),
                 Text(
-                  'Discover events in top cities around the world',
+                  'Descubre eventos en las principales ciudades del mundo',
                   style: AppTypography.body.copyWith(color: Colors.grey),
                 ),
                 const SizedBox(height: 24),

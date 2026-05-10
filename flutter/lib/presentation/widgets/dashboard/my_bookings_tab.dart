@@ -14,21 +14,21 @@ class MyBookingsTab extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('All Bookings', style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700)),
+        const Text('Todas las Reservas', style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700)),
         const SizedBox(height: 4),
-        const Text('Your complete booking history', style: TextStyle(fontSize: 14, color: AppColors.gray500)),
+        const Text('Tu historial completo de reservas', style: TextStyle(fontSize: 14, color: AppColors.gray500)),
         const SizedBox(height: 24),
         bookings.when(
           data: (list) => SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: DataTable(
               columns: const [
-                DataColumn(label: Text('Event')),
-                DataColumn(label: Text('Date')),
-                DataColumn(label: Text('Venue')),
-                DataColumn(label: Text('Tickets')),
+                DataColumn(label: Text('Evento')),
+                DataColumn(label: Text('Fecha')),
+                DataColumn(label: Text('Lugar')),
+                DataColumn(label: Text('Entradas')),
                 DataColumn(label: Text('Total')),
-                DataColumn(label: Text('Status')),
+                DataColumn(label: Text('Estado')),
               ],
               rows: list.map((b) => DataRow(cells: [
                 DataCell(Text(b.eventSnapshot.name, style: const TextStyle(fontWeight: FontWeight.w500))),

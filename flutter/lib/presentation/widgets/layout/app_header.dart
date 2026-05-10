@@ -42,11 +42,11 @@ class AppHeader extends ConsumerWidget implements PreferredSizeWidget {
         if (isDesktop) ...[
           TextButton(
             onPressed: () => context.go('/events'),
-            child: const Text('Events'),
+            child: const Text('Eventos'),
           ),
           TextButton(
             onPressed: () => context.go('/dashboard'),
-            child: const Text('Dashboard'),
+            child: const Text('Panel'),
           ),
         ],
         // Theme toggle

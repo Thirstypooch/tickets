@@ -15,9 +15,9 @@ class MyPropertiesTab extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('Saved Events', style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700)),
+        const Text('Eventos Guardados', style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700)),
         const SizedBox(height: 4),
-        const Text('Events you\'ve saved for later', style: TextStyle(fontSize: 14, color: AppColors.gray500)),
+        const Text('Eventos que guardaste para más tarde', style: TextStyle(fontSize: 14, color: AppColors.gray500)),
         const SizedBox(height: 24),
         events.when(
           data: (list) => list.isEmpty
@@ -28,9 +28,9 @@ class MyPropertiesTab extends ConsumerWidget {
                       children: [
                         Icon(LucideIcons.heart, size: 48, color: AppColors.gray300),
                         const SizedBox(height: 16),
-                        const Text('No saved events yet', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+                        const Text('Aún no hay eventos guardados', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
                         const SizedBox(height: 8),
-                        const Text('Save events to find them here later', style: TextStyle(color: AppColors.gray500)),
+                        const Text('Guardá eventos para encontrarlos aquí después', style: TextStyle(color: AppColors.gray500)),
                       ],
                     ),
                   ),

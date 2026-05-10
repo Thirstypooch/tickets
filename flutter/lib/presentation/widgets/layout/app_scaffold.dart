@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import '../../../data/models/event_filter.dart';
+import '../../providers/event_providers.dart';
 import 'app_header.dart';
 
 class AppScaffold extends StatelessWidget {
@@ -12,15 +15,17 @@ class AppScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const AppHeader(),
-      endDrawer: _MobileDrawer(),
+      endDrawer: const _MobileDrawer(),
       body: child,
     );
   }
 }
 
-class _MobileDrawer extends StatelessWidget {
+class _MobileDrawer extends ConsumerWidget {
+  const _MobileDrawer();
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Drawer(
       child: SafeArea(
         child: ListView(
@@ -28,7 +33,7 @@ class _MobileDrawer extends StatelessWidget {
           children: [
             ListTile(
               leading: const Icon(LucideIcons.home),
-              title: const Text('Home'),
+              title: const Text('Inicio'),
               onTap: () {
                 Navigator.pop(context);
                 context.go('/');
@@ -36,15 +41,17 @@ class _MobileDrawer extends StatelessWidget {
             ),
             ListTile(
               leading: const Icon(LucideIcons.search),
-              title: const Text('Browse Events'),
+              title: const Text('Explorar Eventos'),
               onTap: () {
                 Navigator.pop(context);
+                ref.read(eventFilterProvider.notifier).state =
+                    const EventFilter();
                 context.go('/events');
               },
             ),
             ListTile(
               leading: const Icon(LucideIcons.layoutDashboard),
-              title: const Text('Dashboard'),
+              title: const Text('Panel'),
               onTap: () {
                 Navigator.pop(context);
                 context.go('/dashboard');
@@ -53,8 +60,11 @@ class _MobileDrawer extends StatelessWidget {
             const Divider(),
             ListTile(
               leading: const Icon(LucideIcons.plusCircle),
-              title: const Text('My Tickets'),
-              onTap: () => Navigator.pop(context),
+              title: const Text('Mis Entradas'),
+              onTap: () {
+                Navigator.pop(context);
+                context.go('/dashboard');
+              },
             ),
           ],
         ),

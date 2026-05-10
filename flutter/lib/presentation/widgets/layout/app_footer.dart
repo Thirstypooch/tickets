@@ -34,20 +34,20 @@ class AppFooter extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           const Text(
-            'Discover and book live events, concerts, sports & more.',
+            'Descubre y reserv\u00e1 eventos en vivo, conciertos, deportes y m\u00e1s.',
             style: TextStyle(fontSize: 14, color: AppColors.gray400),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 16),
           const Text(
-            'Powered by Ticketmaster',
+            'Impulsado por Ticketmaster',
             style: TextStyle(fontSize: 12, color: AppColors.gray500),
           ),
           const SizedBox(height: 16),
           const Divider(color: AppColors.gray700),
           const SizedBox(height: 12),
           const Text(
-            '\u00a9 2026 TICKETS. All rights reserved.',
+            '\u00a9 2026 TICKETS. Todos los derechos reservados.',
             style: TextStyle(fontSize: 12, color: AppColors.gray500),
           ),
         ],

@@ -44,7 +44,7 @@ class HeroSection extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Live Events. Real Moments.',
+                  'Eventos en Vivo. Momentos Reales.',
                   style: AppTypography.display.copyWith(color: Colors.white),
                   textAlign: TextAlign.center,
                 )
@@ -53,7 +53,7 @@ class HeroSection extends StatelessWidget {
                     .slideY(begin: 0.2, duration: 800.ms),
                 const SizedBox(height: 16),
                 Text(
-                  'Concerts, sports, theatre & more — find your next experience',
+                  'Conciertos, deportes, teatro y más — encontrá tu próxima experiencia',
                   style: AppTypography.bodyLg.copyWith(
                     color: Colors.white.withValues(alpha: 0.9),
                   ),
