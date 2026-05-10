@@ -47,8 +47,8 @@ class EventCard extends StatelessWidget {
                   CachedNetworkImage(
                     imageUrl: event.image,
                     fit: BoxFit.cover,
-                    placeholder: (_, __) => Container(color: AppColors.gray200),
-                    errorWidget: (_, __, ___) => Container(
+                    placeholder: (_, _) => Container(color: AppColors.gray200),
+                    errorWidget: (_, _, _) => Container(
                       color: AppColors.gray200,
                       child: const Icon(LucideIcons.image, color: AppColors.gray400),
                     ),

@@ -33,8 +33,8 @@ class DestinationCard extends StatelessWidget {
           CachedNetworkImage(
             imageUrl: destination.image,
             fit: BoxFit.cover,
-            placeholder: (_, __) => Container(color: AppColors.gray200),
-            errorWidget: (_, __, ___) => Container(color: AppColors.gray200),
+            placeholder: (_, _) => Container(color: AppColors.gray200),
+            errorWidget: (_, _, _) => Container(color: AppColors.gray200),
           ),
           Container(
             decoration: BoxDecoration(
