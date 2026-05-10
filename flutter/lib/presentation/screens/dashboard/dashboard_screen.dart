@@ -28,7 +28,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  'Dashboard',
+                  'Panel',
                   style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700),
                 ),
                 const SizedBox(height: 24),
@@ -37,11 +37,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 // Simple segmented control instead of TabBar
                 Row(
                   children: [
-                    _TabButton('My Events', 0),
+                    _TabButton('Mis Eventos', 0),
                     const SizedBox(width: 8),
-                    _TabButton('Saved', 1),
+                    _TabButton('Guardados', 1),
                     const SizedBox(width: 8),
-                    _TabButton('History', 2),
+                    _TabButton('Historial', 2),
                   ],
                 ),
                 const SizedBox(height: 24),

@@ -40,7 +40,7 @@ class CribsSearchBar extends StatelessWidget {
             SizedBox(width: compact ? 8 : 16),
             Flexible(
               child: Text(
-                'Search events, artists, venues...',
+                'Buscá eventos, artistas, lugares...',
                 style: TextStyle(
                   fontSize: compact ? 14 : 15,
                   color: AppColors.gray500,

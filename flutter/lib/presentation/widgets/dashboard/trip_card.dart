@@ -124,7 +124,7 @@ class _Content extends StatelessWidget {
             children: [
               Flexible(
                 child: Text(
-                  '${booking.quantity} ticket${booking.quantity > 1 ? 's' : ''} · \$${booking.totalPrice.toStringAsFixed(0)}',
+                  '${booking.quantity} ${booking.quantity > 1 ? 'entradas' : 'entrada'} · \$${booking.totalPrice.toStringAsFixed(0)}',
                   style: const TextStyle(fontSize: 13, color: AppColors.gray600),
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -132,9 +132,16 @@ class _Content extends StatelessWidget {
               const SizedBox(width: 8),
               if (booking.status == 'confirmed')
                 OutlinedButton.icon(
-                  onPressed: () {},
+                  onPressed: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Tus entradas para ${snap.name} se enviarán por email.'),
+                        duration: const Duration(seconds: 3),
+                      ),
+                    );
+                  },
                   icon: const Icon(LucideIcons.ticket, size: 14),
-                  label: const Text('View Tickets'),
+                  label: const Text('Ver Entradas'),
                   style: OutlinedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     textStyle: const TextStyle(fontSize: 13),
@@ -142,9 +149,16 @@ class _Content extends StatelessWidget {
                 ),
               if (booking.status == 'completed')
                 OutlinedButton.icon(
-                  onPressed: () {},
+                  onPressed: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Las reseñas para ${snap.name} estarán disponibles próximamente.'),
+                        duration: const Duration(seconds: 3),
+                      ),
+                    );
+                  },
                   icon: const Icon(LucideIcons.star, size: 14),
-                  label: const Text('Leave Review'),
+                  label: const Text('Dejar Reseña'),
                   style: OutlinedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     textStyle: const TextStyle(fontSize: 13),

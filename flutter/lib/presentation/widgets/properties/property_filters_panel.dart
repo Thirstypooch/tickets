@@ -64,35 +64,35 @@ class _EventFiltersPanelState extends ConsumerState<EventFiltersPanel> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Filters', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+          const Text('Filtros', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
           const SizedBox(height: 24),
 
           // Keyword
-          const Text('Search', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
+          const Text('Buscar', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
           const SizedBox(height: 8),
           TextField(
             controller: _keywordController,
             decoration: const InputDecoration(
-              hintText: 'Artist, event, or venue',
+              hintText: 'Artista, evento o lugar',
               isDense: true,
             ),
           ),
           const SizedBox(height: 20),
 
           // City
-          const Text('City', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
+          const Text('Ciudad', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
           const SizedBox(height: 8),
           TextField(
             controller: _cityController,
             decoration: const InputDecoration(
-              hintText: 'e.g. New York, Miami',
+              hintText: 'ej. New York, Miami',
               isDense: true,
             ),
           ),
           const SizedBox(height: 20),
 
           // Category
-          const Text('Category', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
+          const Text('Categoría', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
           const SizedBox(height: 8),
           ...EventFilter.categoryOptions.map((cat) => RadioListTile<String>(
             title: Text(cat.label, style: const TextStyle(fontSize: 14)),
@@ -109,12 +109,12 @@ class _EventFiltersPanelState extends ConsumerState<EventFiltersPanel> {
 
           SizedBox(
             width: double.infinity,
-            child: ElevatedButton(onPressed: _apply, child: const Text('Apply Filters')),
+            child: ElevatedButton(onPressed: _apply, child: const Text('Aplicar Filtros')),
           ),
           const SizedBox(height: 8),
           SizedBox(
             width: double.infinity,
-            child: OutlinedButton(onPressed: _clear, child: const Text('Clear All')),
+            child: OutlinedButton(onPressed: _clear, child: const Text('Limpiar Todo')),
           ),
         ],
       ),

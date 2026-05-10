@@ -19,7 +19,7 @@ class GuestCounter extends StatelessWidget {
     return Row(
       children: [
         Text(
-          '$value ${value == 1 ? 'guest' : 'guests'}',
+          '$value ${value == 1 ? 'entrada' : 'entradas'}',
           style: TextStyle(
             fontSize: 14,
             color: Theme.of(context).colorScheme.onSurface,

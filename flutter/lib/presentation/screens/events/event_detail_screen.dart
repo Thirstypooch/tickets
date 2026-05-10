@@ -40,37 +40,76 @@ class _EventDetailScreenState extends ConsumerState<EventDetailScreen> {
               decoration: const BoxDecoration(
                 border: Border(bottom: BorderSide(color: AppColors.gray200)),
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  TextButton.icon(
-                    onPressed: () => context.go('/events'),
-                    icon: const Icon(LucideIcons.arrowLeft, size: 16),
-                    label: const Text('Back to events'),
-                  ),
-                  Row(
+              child: Builder(
+                builder: (context) {
+                  final isCompact = screenWidth < AppSpacing.breakpointSm;
+                  if (isCompact) {
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        IconButton(
+                          onPressed: () => context.go('/events'),
+                          icon: const Icon(LucideIcons.arrowLeft, size: 20),
+                          tooltip: 'Volver a eventos',
+                        ),
+                        Row(
+                          children: [
+                            IconButton(
+                              onPressed: () {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text('Compartir: ${event.url}')),
+                                );
+                              },
+                              icon: const Icon(LucideIcons.share, size: 20),
+                              tooltip: 'Compartir',
+                            ),
+                            IconButton(
+                              onPressed: () => setState(() => _isFavorited = !_isFavorited),
+                              icon: Icon(
+                                LucideIcons.heart,
+                                size: 20,
+                                color: _isFavorited ? AppColors.heartRed : null,
+                              ),
+                              tooltip: 'Guardar',
+                            ),
+                          ],
+                        ),
+                      ],
+                    );
+                  }
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       TextButton.icon(
-                        onPressed: () {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('Share: ${event.url}')),
-                          );
-                        },
-                        icon: const Icon(LucideIcons.share, size: 16),
-                        label: const Text('Share'),
+                        onPressed: () => context.go('/events'),
+                        icon: const Icon(LucideIcons.arrowLeft, size: 16),
+                        label: const Text('Volver a eventos'),
                       ),
-                      TextButton.icon(
-                        onPressed: () => setState(() => _isFavorited = !_isFavorited),
-                        icon: Icon(
-                          LucideIcons.heart,
-                          size: 16,
-                          color: _isFavorited ? AppColors.heartRed : null,
-                        ),
-                        label: const Text('Save'),
+                      Row(
+                        children: [
+                          TextButton.icon(
+                            onPressed: () {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text('Compartir: ${event.url}')),
+                              );
+                            },
+                            icon: const Icon(LucideIcons.share, size: 16),
+                            label: const Text('Compartir'),
+                          ),
+                          TextButton.icon(
+                            onPressed: () => setState(() => _isFavorited = !_isFavorited),
+                            icon: Icon(
+                              LucideIcons.heart,
+                              size: 16,
+                              color: _isFavorited ? AppColors.heartRed : null,
+                            ),
+                            label: const Text('Guardar'),
+                          ),
+                        ],
                       ),
                     ],
-                  ),
-                ],
+                  );
+                },
               ),
             ),
 
@@ -97,7 +136,8 @@ class _EventDetailScreenState extends ConsumerState<EventDetailScreen> {
                           ),
                         ),
                       ),
-                      if (event.genre.isNotEmpty) ...[
+                      if (event.genre.isNotEmpty &&
+                          event.genre.toLowerCase() != 'undefined') ...[
                         const SizedBox(width: 8),
                         Text(event.genre, style: const TextStyle(fontSize: 13, color: AppColors.gray500)),
                       ],
@@ -113,31 +153,36 @@ class _EventDetailScreenState extends ConsumerState<EventDetailScreen> {
                   const SizedBox(height: 8),
 
                   // Date + Venue + City
-                  Wrap(
-                    spacing: 16,
-                    runSpacing: 8,
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Icon(LucideIcons.calendar, size: 16, color: AppColors.gray500),
-                          const SizedBox(width: 6),
-                          Text(
-                            '${event.date}${event.time != null ? ' at ${event.time!.substring(0, 5)}' : ''}',
-                            style: const TextStyle(fontSize: 15, color: AppColors.gray600),
-                          ),
-                        ],
+                      const Padding(
+                        padding: EdgeInsets.only(top: 2),
+                        child: Icon(LucideIcons.calendar, size: 16, color: AppColors.gray500),
                       ),
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Icon(LucideIcons.mapPin, size: 16, color: AppColors.gray500),
-                          const SizedBox(width: 6),
-                          Text(
-                            '${event.venueName}, ${event.location}',
-                            style: const TextStyle(fontSize: 15, color: AppColors.gray600),
-                          ),
-                        ],
+                      const SizedBox(width: 6),
+                      Expanded(
+                        child: Text(
+                          '${event.date}${event.time != null ? ' a las ${event.time!.substring(0, 5)}' : ''}',
+                          style: const TextStyle(fontSize: 15, color: AppColors.gray600),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.only(top: 2),
+                        child: Icon(LucideIcons.mapPin, size: 16, color: AppColors.gray500),
+                      ),
+                      const SizedBox(width: 6),
+                      Expanded(
+                        child: Text(
+                          '${event.venueName}, ${event.location}',
+                          style: const TextStyle(fontSize: 15, color: AppColors.gray600),
+                        ),
                       ),
                     ],
                   ),
@@ -162,7 +207,7 @@ class _EventDetailScreenState extends ConsumerState<EventDetailScreen> {
                               // Description
                               if (event.description.isNotEmpty) ...[
                                 const Text(
-                                  'About this event',
+                                  'Sobre este evento',
                                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
                                 ),
                                 const SizedBox(height: 12),
@@ -182,7 +227,7 @@ class _EventDetailScreenState extends ConsumerState<EventDetailScreen> {
                               // Venue info
                               if (event.venue != null) ...[
                                 const Text(
-                                  'Venue',
+                                  'Lugar',
                                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
                                 ),
                                 const SizedBox(height: 12),
@@ -195,7 +240,7 @@ class _EventDetailScreenState extends ConsumerState<EventDetailScreen> {
                               // Attractions
                               if (event.attractions.isNotEmpty) ...[
                                 const Text(
-                                  'Performers',
+                                  'Artistas',
                                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
                                 ),
                                 const SizedBox(height: 12),
@@ -234,13 +279,13 @@ class _EventDetailScreenState extends ConsumerState<EventDetailScreen> {
                     )
                   else ...[
                     if (event.description.isNotEmpty) ...[
-                      const Text('About this event', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
+                      const Text('Sobre este evento', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
                       const SizedBox(height: 12),
                       Text(event.description, style: const TextStyle(fontSize: 15, color: AppColors.gray600, height: 1.6)),
                       const SizedBox(height: 24),
                     ],
                     if (event.venue != null) ...[
-                      const Text('Venue', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
+                      const Text('Lugar', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
                       const SizedBox(height: 12),
                       _VenueCard(venue: event.venue!),
                       const SizedBox(height: 24),
@@ -290,20 +335,38 @@ class _VenueCard extends StatelessWidget {
           if (venue.address.isNotEmpty) ...[
             const SizedBox(height: 4),
             Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Icon(LucideIcons.mapPin, size: 14, color: AppColors.gray500),
+                const Padding(
+                  padding: EdgeInsets.only(top: 3),
+                  child: Icon(LucideIcons.mapPin, size: 14, color: AppColors.gray500),
+                ),
                 const SizedBox(width: 6),
-                Text('${venue.address}, ${venue.location}', style: const TextStyle(fontSize: 14, color: AppColors.gray500)),
+                Expanded(
+                  child: Text(
+                    '${venue.address}, ${venue.location}',
+                    style: const TextStyle(fontSize: 14, color: AppColors.gray500),
+                  ),
+                ),
               ],
             ),
           ],
           if (venue.timezone.isNotEmpty) ...[
             const SizedBox(height: 4),
             Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Icon(LucideIcons.clock, size: 14, color: AppColors.gray500),
+                const Padding(
+                  padding: EdgeInsets.only(top: 3),
+                  child: Icon(LucideIcons.clock, size: 14, color: AppColors.gray500),
+                ),
                 const SizedBox(width: 6),
-                Text(venue.timezone, style: const TextStyle(fontSize: 14, color: AppColors.gray500)),
+                Expanded(
+                  child: Text(
+                    venue.timezone,
+                    style: const TextStyle(fontSize: 14, color: AppColors.gray500),
+                  ),
+                ),
               ],
             ),
           ],

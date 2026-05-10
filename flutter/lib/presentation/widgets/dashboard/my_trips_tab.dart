@@ -18,12 +18,12 @@ class MyTripsTab extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text(
-          'Upcoming Events',
+          'Próximos Eventos',
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
         ),
         const SizedBox(height: 4),
         const Text(
-          'Your confirmed reservations',
+          'Tus reservas confirmadas',
           style: TextStyle(fontSize: 14, color: AppColors.gray500),
         ),
         const SizedBox(height: 16),
@@ -32,8 +32,8 @@ class MyTripsTab extends ConsumerWidget {
             if (list.isEmpty) {
               return const EmptyState(
                 icon: LucideIcons.ticket,
-                title: 'No upcoming events',
-                subtitle: 'Browse events and book your next experience!',
+                title: 'No hay eventos próximos',
+                subtitle: '¡Explorá eventos y reservá tu próxima experiencia!',
               );
             }
             return ListView.separated(

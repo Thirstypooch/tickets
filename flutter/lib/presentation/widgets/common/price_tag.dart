@@ -20,7 +20,7 @@ class PriceTag extends StatelessWidget {
             ),
           ),
           const TextSpan(
-            text: ' / night',
+            text: ' / noche',
             style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w400,

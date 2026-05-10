@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
 import '../../providers/booking_form_providers.dart';
@@ -50,7 +51,7 @@ class TicketBookingWidget extends ConsumerWidget {
               textBaseline: TextBaseline.alphabetic,
               children: [
                 Text(
-                  'From \$${priceMin!.toStringAsFixed(0)}',
+                  'Desde \$${priceMin!.toStringAsFixed(0)}',
                   style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w700),
                 ),
                 if (priceMax != null && priceMax != priceMin) ...[
@@ -62,14 +63,14 @@ class TicketBookingWidget extends ConsumerWidget {
                 ],
                 const SizedBox(width: 8),
                 const Text(
-                  'per ticket',
+                  'por entrada',
                   style: TextStyle(fontSize: 14, color: AppColors.gray500),
                 ),
               ],
             )
           else
             const Text(
-              'Price TBD',
+              'Precio a definir',
               style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700),
             ),
           const SizedBox(height: 20),
@@ -85,7 +86,7 @@ class TicketBookingWidget extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  'TICKETS',
+                  'ENTRADAS',
                   style: TextStyle(
                     fontSize: 10,
                     fontWeight: FontWeight.w500,
@@ -107,19 +108,19 @@ class TicketBookingWidget extends ConsumerWidget {
           // Price breakdown
           if (hasPrice) ...[
             _PriceRow(
-              '${quantity}x tickets',
+              '${quantity}x entradas',
               '\$${(priceMin! * quantity).toStringAsFixed(2)}',
             ),
             const SizedBox(height: 8),
             _PriceRow(
-              'Service fee',
+              'Cargo por servicio',
               '\$${(priceMin! * quantity * 0.14).toStringAsFixed(2)}',
             ),
             const SizedBox(height: 12),
             const Divider(),
             const SizedBox(height: 12),
             _PriceRow(
-              'Estimated total',
+              'Total estimado',
               '\$${(priceMin! * quantity * 1.14).toStringAsFixed(2)}',
               bold: true,
             ),
@@ -133,11 +134,11 @@ class TicketBookingWidget extends ConsumerWidget {
               onPressed: () {
                 // In a real app, this creates a booking via the API
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Booking confirmed!')),
+                  const SnackBar(content: Text('¡Reserva confirmada!')),
                 );
               },
               icon: const Icon(LucideIcons.ticket, size: 18),
-              label: const Text('Get Tickets'),
+              label: const Text('Obtener Entradas'),
             ),
           ),
           const SizedBox(height: 8),
@@ -145,13 +146,18 @@ class TicketBookingWidget extends ConsumerWidget {
           // Ticketmaster link
           Center(
             child: TextButton.icon(
-              onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Opening: $ticketmasterUrl')),
-                );
+              onPressed: () async {
+                final uri = Uri.tryParse(ticketmasterUrl);
+                if (uri == null) return;
+                final ok = await launchUrl(uri, mode: LaunchMode.externalApplication);
+                if (!ok && context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('No se pudo abrir Ticketmaster.')),
+                  );
+                }
               },
               icon: const Icon(LucideIcons.externalLink, size: 14),
-              label: const Text('View on Ticketmaster'),
+              label: const Text('Ver en Ticketmaster'),
               style: TextButton.styleFrom(
                 textStyle: const TextStyle(fontSize: 13),
               ),
@@ -161,7 +167,7 @@ class TicketBookingWidget extends ConsumerWidget {
           const SizedBox(height: 8),
           const Center(
             child: Text(
-              'Powered by Ticketmaster',
+              'Impulsado por Ticketmaster',
               style: TextStyle(fontSize: 11, color: AppColors.gray400),
             ),
           ),

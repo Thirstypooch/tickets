@@ -65,7 +65,7 @@ class _PropertyGalleryState extends State<PropertyGallery> {
                         borderRadius: BorderRadius.circular(6),
                       ),
                       child: Text(
-                        '+${images.length - 1} more',
+                        '+${images.length - 1} más',
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 13,
@@ -120,7 +120,7 @@ class _PropertyGalleryState extends State<PropertyGallery> {
                                     color: Colors.black.withValues(alpha: 0.4),
                                     child: Center(
                                       child: Text(
-                                        '+${images.length - 5} more',
+                                        '+${images.length - 5} más',
                                         style: const TextStyle(
                                           color: Colors.white,
                                           fontSize: 16,

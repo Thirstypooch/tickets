@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../../../data/datasources/mock_destinations.dart';
+import '../../../data/models/event_filter.dart';
+import '../../providers/event_providers.dart';
 import 'destination_card.dart';
 
-class ExploreDestinationsGrid extends StatelessWidget {
+class ExploreDestinationsGrid extends ConsumerWidget {
   const ExploreDestinationsGrid({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final destinations = MockDestinations.all;
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -27,7 +31,15 @@ class ExploreDestinationsGrid extends StatelessWidget {
           ),
           itemCount: destinations.length,
           itemBuilder: (context, index) {
-            return DestinationCard(destination: destinations[index])
+            final destination = destinations[index];
+            return DestinationCard(
+              destination: destination,
+              onTap: () {
+                ref.read(eventFilterProvider.notifier).state =
+                    EventFilter(city: destination.name);
+                context.go('/events');
+              },
+            )
                 .animate()
                 .fadeIn(duration: 500.ms, delay: (index * 100).ms)
                 .scale(

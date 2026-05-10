@@ -54,7 +54,7 @@ class DatePickerField extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           Text(
-            value != null ? DateFormatter.short(value!) : 'Add date',
+            value != null ? DateFormatter.short(value!) : 'Agregar fecha',
             style: TextStyle(
               fontSize: 14,
               color: value != null

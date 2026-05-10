@@ -5,32 +5,32 @@ import '../../data/models/dashboard_stat.dart';
 final dashboardStatsProvider = Provider<List<DashboardStat>>((ref) {
   return [
     DashboardStat(
-      title: 'Events Attended',
+      title: 'Eventos Asistidos',
       value: '8',
       icon: LucideIcons.calendar,
-      description: 'Total bookings',
-      trend: '2 upcoming',
+      description: 'Reservas totales',
+      trend: '2 próximos',
     ),
     DashboardStat(
-      title: 'Upcoming Events',
+      title: 'Próximos Eventos',
       value: '2',
       icon: LucideIcons.ticket,
-      description: 'Confirmed reservations',
-      trend: 'You have plans!',
+      description: 'Reservas confirmadas',
+      trend: '¡Tenés planes!',
     ),
     DashboardStat(
-      title: 'Total Spent',
+      title: 'Gasto Total',
       value: '\$2,248',
       icon: LucideIcons.dollarSign,
-      description: 'Lifetime spending',
-      trend: 'Keep exploring',
+      description: 'Gasto histórico',
+      trend: 'Seguí explorando',
     ),
     DashboardStat(
-      title: 'Average Rating',
+      title: 'Calificación Promedio',
       value: '4.7',
       icon: LucideIcons.star,
-      description: 'Your review average',
-      trend: '6 reviews given',
+      description: 'Tu promedio de reseñas',
+      trend: '6 reseñas dadas',
     ),
   ];
 });

@@ -51,21 +51,21 @@ class EventSummary {
 
   factory EventSummary.fromJson(Map<String, dynamic> json) {
     return EventSummary(
-      id: json['id'] as String,
-      name: json['name'] as String,
-      date: json['date'] as String,
+      id: json['id'] as String? ?? '',
+      name: json['name'] as String? ?? '',
+      date: json['date'] as String? ?? '',
       time: json['time'] as String?,
-      image: json['image'] as String,
-      city: json['city'] as String,
-      state: json['state'] as String,
-      venueName: json['venueName'] as String,
-      category: json['category'] as String,
+      image: json['image'] as String? ?? '',
+      city: json['city'] as String? ?? '',
+      state: json['state'] as String? ?? '',
+      venueName: json['venueName'] as String? ?? '',
+      category: json['category'] as String? ?? 'Other',
       genre: json['genre'] as String? ?? '',
       priceMin: (json['priceMin'] as num?)?.toDouble(),
       priceMax: (json['priceMax'] as num?)?.toDouble(),
       currency: json['currency'] as String? ?? 'USD',
-      status: json['status'] as String,
-      url: json['url'] as String,
+      status: json['status'] as String? ?? 'onsale',
+      url: json['url'] as String? ?? '',
       isFavorited: json['isFavorited'] as bool?,
     );
   }
